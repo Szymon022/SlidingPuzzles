@@ -1,0 +1,59 @@
+= Plan projektu
+Szymon Kurpas <author@asciidoctor.org>
+3.0, July 29, 2022: AsciiDoc article template
+:icons: font
+
+Projektem realizowanym przeze mnie będzie projekt nr. 12 o średnim poziomie trudności - kwadratowe ponumerowane puzzle, które należy ułożyć w kolejności rosnącej wierszami zgodnie z numerkami.
+
+== Wykorzystane narzędzia i biblioteki
+
+GUI aplikacji zostanie napisane z użyciem framework'a Qt.
+Jeśli chodzi o IDE, to zostanie wykorzystany CLion.
+Tam gdzie będzie to konieczne, wykorzystany zostanie QtCreator.
+Kompilator: `clang`
+
+== Funkcjonalności
+
+=== Tworzenie nowej gry
+
+- możliwość wyboru planszy spośród typów: numeryczne, obrazkowe
+- możliwość wyboru rozmiaru planszy spośród predefiniowanych rozmiarów, ale także możliwość zdefiniowania własnego rozmiaru planszy
+- możliwość wgrania własnego zdjęcia w celu zdefiniowania planszy z obrazkiem
+- możliwość zapisu planszy, w celu późniejszego szybszego rozpoczęcia gry
+- możliwość rozgrywki w trybie zwykłym, czyli zegar odlicza czas rozgrywki
+- możliwość rozgrywki w trybie walki z czasem - użytkownik ustawia limit czasu. Gra kończy się, gdy skończy się czas, lub gdy puzzle zostaną ułożone
+
+=== Rozgrywka
+
+- licznik odmierzający czas
+- licznik wykonanych ruchów
+- możliwość zrestartowania rozgrywki
+- sprawdzenie warunku zwycięstwa
+- możliwość włączenia podglądu planszy w celu sprawdzenia jak ma wyglądać wynikowa plansza
+
+=== Koniec rozgrywki
+
+- wyświetlenie komunikatu pokazującego jak użytkownik wypadł na tle swoich poprzednich rozgrywek
+- wyświetlenie opcji "zagraj jeszcze raz"
+
+== Szkic GUI
+
+=== Menu główne
+image::../../Pictures/slides_menu.jpg[]
+
+=== Tworzenie nowej rozgrywki
+image::../../Pictures/slides_create_game.jpg[]
+
+=== Rozgrywka
+image::../../Pictures/slides_gae.jpg[]
+
+=== Koniec gry
+image::../../Pictures/slides_end_game.jpg[]
+
+
+
+
+
+
+
+
