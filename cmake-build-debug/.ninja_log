@@ -1,0 +1,12 @@
+# ninja log v6
+1	30	1741526753643727414	SlidingPuzzles_autogen/timestamp	771161485e39c0a2
+1	30	1741526753643727414	SlidingPuzzles_autogen/mocs_compilation.cpp	771161485e39c0a2
+1	30	1741526753643727414	/home/szymon/CLionProjects/SlidingPuzzles/cmake-build-debug/SlidingPuzzles_autogen/timestamp	771161485e39c0a2
+1	30	1741526753643727414	/home/szymon/CLionProjects/SlidingPuzzles/cmake-build-debug/SlidingPuzzles_autogen/mocs_compilation.cpp	771161485e39c0a2
+31	54	1741526753647727619	CMakeFiles/SlidingPuzzles.dir/SlidingPuzzles_autogen/mocs_compilation.cpp.o	e70d7b7e411cc2a0
+31	156	1741526753646727568	CMakeFiles/SlidingPuzzles.dir/main.cpp.o.ddi	8ba411608f80a0cc
+156	159	1741526753774734136	CMakeFiles/SlidingPuzzles.dir/CXX.dd	8d8a50d9e7b9d5f
+156	159	1741526753774734136	/home/szymon/CLionProjects/SlidingPuzzles/cmake-build-debug/CMakeFiles/SlidingPuzzles.dir/CXXModules.json	8d8a50d9e7b9d5f
+156	159	1741526753774734136	CMakeFiles/SlidingPuzzles.dir/main.cpp.o.modmap	8d8a50d9e7b9d5f
+159	2557	1741526753774734136	CMakeFiles/SlidingPuzzles.dir/main.cpp.o	9195f5e7e76c2ebf
+2558	2824	1741526756173857256	SlidingPuzzles	6b7fd83c05676f1a

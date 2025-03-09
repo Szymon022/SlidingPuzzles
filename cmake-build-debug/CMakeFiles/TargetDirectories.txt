@@ -1,0 +1,5 @@
+/home/szymon/CLionProjects/SlidingPuzzles/cmake-build-debug/CMakeFiles/SlidingPuzzles.dir
+/home/szymon/CLionProjects/SlidingPuzzles/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/szymon/CLionProjects/SlidingPuzzles/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/szymon/CLionProjects/SlidingPuzzles/cmake-build-debug/CMakeFiles/SlidingPuzzles_autogen_timestamp_deps.dir
+/home/szymon/CLionProjects/SlidingPuzzles/cmake-build-debug/CMakeFiles/SlidingPuzzles_autogen.dir
