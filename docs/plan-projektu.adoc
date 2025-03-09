@@ -39,16 +39,16 @@ Kompilator: `clang`
 == Szkic GUI
 
 === Menu główne
-image::../../Pictures/slides_menu.jpg[]
+image::slides_menu.jpg[]
 
 === Tworzenie nowej rozgrywki
-image::../../Pictures/slides_create_game.jpg[]
+image::slides_create_game.jpg[]
 
 === Rozgrywka
-image::../../Pictures/slides_gae.jpg[]
+image::slides_game.jpg[]
 
 === Koniec gry
-image::../../Pictures/slides_end_game.jpg[]
+image::slides_end_game.jpg[]
 
 
 
