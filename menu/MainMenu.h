@@ -10,22 +10,31 @@
 
 QT_BEGIN_NAMESPACE
 
-namespace Ui {
+namespace Ui
+{
     class MainMenu;
 }
 
 QT_END_NAMESPACE
 
-class MainMenu : public QWidget {
+class MainMenu : public QWidget
+{
     Q_OBJECT
 
 public:
-    explicit MainMenu(QWidget *parent = nullptr);
+    explicit MainMenu(QWidget* parent = nullptr);
 
     ~MainMenu() override;
 
+signals:
+    void navigateToNewGame();
+
+private slots:
+    void onNewGameClicked();
+    void onExitGameClicked();
+
 private:
-    Ui::MainMenu *ui;
+    Ui::MainMenu* ui;
 };
 
 
