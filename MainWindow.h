@@ -7,6 +7,9 @@
 
 #include <QMainWindow>
 
+#include "game/GameScreen.h"
+#include "menu/MainMenu.h"
+
 
 QT_BEGIN_NAMESPACE
 
@@ -24,8 +27,14 @@ public:
 
     ~MainWindow() override;
 
+public slots:
+    void handleNavigateToMainMenu() const;
+    void handleNavigateToNewGame() const;
+
 private:
     Ui::MainWindow *ui;
+    MainMenu main_menu;
+    GameScreen game_screen;
 };
 
 

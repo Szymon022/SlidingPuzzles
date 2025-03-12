@@ -6,15 +6,32 @@
 
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
+#include "game/GameScreen.h"
 #include "menu/MainMenu.h"
 
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
+MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWindow)
+{
     ui->setupUi(this);
 
-    ui->stackedWidget->addWidget(new MainMenu(ui->stackedWidget));
+    connect(&main_menu, SIGNAL(navigateToNewGame()), this, SLOT(handleNavigateToNewGame()));
+    connect(&game_screen, SIGNAL(navigateToMainMenu()), this, SLOT(handleNavigateToMainMenu()));
+
+    ui->stackedWidget->addWidget(&main_menu);
+    ui->stackedWidget->addWidget(&game_screen);
 }
 
-MainWindow::~MainWindow() {
+void MainWindow::handleNavigateToMainMenu() const
+{
+    ui->stackedWidget->setCurrentIndex(0);
+}
+
+void MainWindow::handleNavigateToNewGame() const
+{
+    ui->stackedWidget->setCurrentIndex(1);
+}
+
+MainWindow::~MainWindow()
+{
     delete ui;
 }
