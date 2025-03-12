@@ -20,6 +20,9 @@ add_executable(SlidingPuzzles main.cpp
         menu/MainMenu.cpp
         menu/MainMenu.h
         menu/MainMenu.ui
+        game/GameScreen.cpp
+        game/GameScreen.h
+        game/GameScreen.ui
 )
 target_link_libraries(SlidingPuzzles
   Qt::Core
