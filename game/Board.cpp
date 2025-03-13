@@ -57,6 +57,20 @@ int Board::getTile(const int row, const int column) const
     return board[row][column];
 }
 
+bool Board::isSolved()
+{
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < columns; j++)
+        {
+            if (i == rows - 1 && j == columns - 1 && board[i][j] != 0) return false;
+            if (board[i][j] != i * columns + j + 1) return false;
+        }
+    }
+
+    return true;
+}
+
 int Board::getBoardRows()
 {
     return rows;
