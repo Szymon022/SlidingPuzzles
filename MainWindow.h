@@ -8,7 +8,7 @@
 #include <QMainWindow>
 
 #include "game/GameScreen.h"
-#include "menu/MainMenu.h"
+#include "menu/MenuScreen.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -33,7 +33,7 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
-    MainMenu main_menu;
+    MenuScreen main_menu;
     GameScreen game_screen;
 };
 

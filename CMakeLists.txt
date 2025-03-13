@@ -17,9 +17,9 @@ add_executable(SlidingPuzzles main.cpp
         MainWindow.cpp
         MainWindow.h
         MainWindow.ui
-        menu/MainMenu.cpp
-        menu/MainMenu.h
-        menu/MainMenu.ui
+        menu/MenuScreen.cpp
+        menu/MenuScreen.h
+        menu/MenuScreen.ui
         game/GameScreen.cpp
         game/GameScreen.h
         game/GameScreen.ui
