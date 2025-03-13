@@ -44,8 +44,18 @@ GameScreen::GameScreen(QWidget* parent) :
 void GameScreen::onTileClick(int row, int column)
 {
     board->onTileClick(row, column);
+    checkWinCondition();
     renderBoard();
 }
+
+void GameScreen::checkWinCondition() const
+{
+    if (board->isSolved())
+    {
+        qDebug() << "GAME WIN";
+    }
+}
+
 
 void GameScreen::renderBoard()
 {
