@@ -19,6 +19,7 @@ public:
     int getBoardCols();
 
     int getTile(int row, int column) const;
+    bool isSolved();
 };
 
 
