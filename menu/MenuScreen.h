@@ -12,19 +12,19 @@ QT_BEGIN_NAMESPACE
 
 namespace Ui
 {
-    class MainMenu;
+    class MenuScreen;
 }
 
 QT_END_NAMESPACE
 
-class MainMenu : public QWidget
+class MenuScreen : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit MainMenu(QWidget* parent = nullptr);
+    explicit MenuScreen(QWidget* parent = nullptr);
 
-    ~MainMenu() override;
+    ~MenuScreen() override;
 
 signals:
     void navigateToNewGame();
@@ -34,7 +34,7 @@ private slots:
     void onExitGameClicked();
 
 private:
-    Ui::MainMenu* ui;
+    Ui::MenuScreen* ui;
 };
 
 

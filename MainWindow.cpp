@@ -7,7 +7,7 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "game/GameScreen.h"
-#include "menu/MainMenu.h"
+#include "menu/MenuScreen.h"
 
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWindow)
