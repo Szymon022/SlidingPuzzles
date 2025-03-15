@@ -4,8 +4,9 @@
 
 #ifndef BOARD_H
 #define BOARD_H
+#include <qobject.h>
 
-class Board
+class Board : public QObject
 {
     int rows = 3;
     int columns = 3;
@@ -19,7 +20,8 @@ public:
     int getBoardCols();
 
     int getTile(int row, int column) const;
-    bool isSolved();
+    bool isSolved() const;
+    void printBoard();
 };
 
 
