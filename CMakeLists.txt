@@ -13,7 +13,19 @@ find_package(Qt6 COMPONENTS
   Widgets
   REQUIRED)
 
-add_executable(SlidingPuzzles main.cpp)
+add_executable(SlidingPuzzles main.cpp
+        MainWindow.cpp
+        MainWindow.h
+        MainWindow.ui
+        menu/MenuScreen.cpp
+        menu/MenuScreen.h
+        menu/MenuScreen.ui
+        game/GameScreen.cpp
+        game/GameScreen.h
+        game/GameScreen.ui
+        game/Board.cpp
+        game/Board.h
+)
 target_link_libraries(SlidingPuzzles
   Qt::Core
   Qt::Gui
