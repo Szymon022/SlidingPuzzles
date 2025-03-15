@@ -4,74 +4,83 @@
 
 #include "Board.h"
 
-Board::Board(int board[3][3])
-{
-    for (int i = 0; i < 3; i++)
-    {
-        for (int j = 0; j < 3; j++)
-        {
+#include <iosfwd>
+#include <qdebug.h>
+#include <qstring.h>
+#include <sstream>
+
+Board::Board(int board[3][3]) {
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
             this->board[i][j] = board[i][j];
         }
     }
 }
 
-void Board::onTileClick(const int row, const int column)
-{
-    if (row < 0 || row >= rows || column < 0 || column >= columns)
-    {
+void Board::onTileClick(const int row, const int column) {
+    if (row < 0 || row >= rows || column < 0 || column >= columns) {
         return;
     }
 
     int tile = board[row][column];
     if (tile == 0) return;
 
-    if (row > 0 && board[row - 1][column] == 0)
-    {
+    if (row > 0 && board[row - 1][column] == 0) {
         board[row][column] = 0;
         board[row - 1][column] = tile;
-    }
-    else if (row < rows - 1 && board[row + 1][column] == 0)
-    {
+    } else if (row < rows - 1 && board[row + 1][column] == 0) {
         board[row][column] = 0;
         board[row + 1][column] = tile;
-    }
-    else if (column > 0 && board[row][column - 1] == 0)
-    {
+    } else if (column > 0 && board[row][column - 1] == 0) {
         board[row][column] = 0;
         board[row][column - 1] = tile;
-    }
-    else if (column < columns - 1 && board[row][column + 1] == 0)
-    {
+    } else if (column < columns - 1 && board[row][column + 1] == 0) {
         board[row][column] = 0;
         board[row][column + 1] = tile;
     }
 }
 
-int Board::getBoardCols()
-{
+int Board::getBoardCols() {
     return columns;
 }
 
-int Board::getTile(const int row, const int column) const
-{
+int Board::getTile(const int row, const int column) const {
     return board[row][column];
 }
 
-bool Board::isSolved()
-{
-    for (int i = 0; i < rows; i++)
-    {
-        for (int j = 0; j < columns; j++)
-        {
-            if (i == rows - 1 && j == columns - 1 && board[i][j] != 0) return false;
-            if (board[i][j] != i * columns + j + 1) return false;
+bool Board::isSolved() const {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < columns; j++) {
+            auto expected = i * columns + j + 1;
+            if (i == rows - 1 && j == columns - 1) {
+                expected = 0;
+            }
+
+            const auto actual = board[i][j];
+
+            if (expected != actual) {
+                return false;
+            }
         }
     }
 
     return true;
 }
 
-int Board::getBoardRows()
-{
+void Board::printBoard() {
+    std::stringstream ss;
+    qDebug() << "-------------------";
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < columns - 1; j++) {
+            ss << board[i][j] << "|";
+        }
+        ss << board[i][columns - 1];
+        qDebug() << ss.str();
+        ss.str("");
+    }
+    qDebug() << "-------------------";
+}
+
+int Board::getBoardRows() {
     return rows;
 }
