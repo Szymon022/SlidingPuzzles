@@ -8,7 +8,7 @@
 #include <QPushButton>
 #include <QWidget>
 
-#include "Board.h"
+#include "board/Board.h"
 
 
 QT_BEGIN_NAMESPACE
