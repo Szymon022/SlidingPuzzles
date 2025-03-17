@@ -16,19 +16,7 @@
 GameScreen::GameScreen(QWidget *parent) : QWidget(parent), ui(new Ui::GameScreen) {
     ui->setupUi(this);
 
-    this->board = new Board(
-        {
-            new NumberTile(1, 2),
-            new NumberTile(7, 8),
-            new NumberTile(5, 6),
-            new NumberTile(6, 7),
-            new NumberTile(0, 1),
-            new NumberTile(4, 5),
-            new NumberTile(3, 4),
-            new NumberTile(2, 3),
-            new EmptyTile(8),
-        }
-    );
+    this->board = new Board({2, 8, 6, 7, 1, 5, 4, 3, 0});
 
     QPushButton *buttons[3][3] = {
         {ui->pushButton, ui->pushButton_2, ui->pushButton_3},

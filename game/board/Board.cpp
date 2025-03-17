@@ -9,8 +9,10 @@
 #include <qstring.h>
 #include <sstream>
 #include <vector>
+#include <vector>
 
 #include "tiles/EmptyTile.h"
+#include "tiles/NumberTile.h"
 
 
 int Board::toOneDimensionIndex(const int row, const int column) const {
@@ -23,7 +25,7 @@ bool Board::isEmptyTile(const int row, const int column) const {
     return dynamic_cast<EmptyTile *>(tile) != nullptr;
 }
 
-Board::Board(const std::vector<Tile *> &board) {
+Board::Board(const std::vector<int> &board) {
     if (board.size() == 0) {
         throw std::invalid_argument("board is empty");
     }
@@ -33,7 +35,14 @@ Board::Board(const std::vector<Tile *> &board) {
     }
 
     this->size = boardSize;
-    this->board = board;
+    this->board = std::vector<Tile *>();
+    for (int i = 0; i < board.size(); i++) {
+        if (board[i] == 0) {
+            this->board.push_back(new EmptyTile(i));
+        } else {
+            this->board.push_back(new NumberTile(i, board[i]));
+        }
+    }
 }
 
 Board::~Board() {
