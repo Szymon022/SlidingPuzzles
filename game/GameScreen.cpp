@@ -24,6 +24,9 @@ GameScreen::GameScreen(QWidget *parent) : QWidget(parent), ui(new Ui::GameScreen
         {ui->pushButton_7, ui->pushButton_8, ui->pushButton_9}
     };
 
+    connect(ui->restartBoardButton, &QPushButton::clicked, this, &GameScreen::restartBoard);
+    connect(ui->navigateToMainMenuButton, &QPushButton::clicked, this, &GameScreen::onNavigateToMainMenu);
+
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
             buttons[i][j]->setMinimumSize(200, 200);
@@ -35,6 +38,11 @@ GameScreen::GameScreen(QWidget *parent) : QWidget(parent), ui(new Ui::GameScreen
             connect(buttons[i][j], &QPushButton::clicked, this, [this, i, j] { onTileClick(i, j); });
         }
     }
+    renderBoard();
+}
+
+void GameScreen::restartBoard() {
+    board->restart();
     renderBoard();
 }
 

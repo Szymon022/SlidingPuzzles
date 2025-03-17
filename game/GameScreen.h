@@ -26,6 +26,9 @@ class GameScreen : public QWidget
 
 public:
     explicit GameScreen(QWidget* parent = nullptr);
+
+    void restartBoard();
+
     void onTileClick(int row, int column);
     void checkWinCondition() const;
     void renderBoard();
