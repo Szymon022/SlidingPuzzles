@@ -6,22 +6,29 @@
 #define BOARD_H
 #include <qobject.h>
 
-class Board : public QObject
-{
-    int rows = 3;
-    int columns = 3;
-    int board[3][3]{};
+#include "tiles/Tile.h"
+
+class Board : public QObject {
+    int size;
+    std::vector<Tile*> board;
+
+    int toOneDimensionIndex(int row, int column) const;
+
+    bool isEmptyTile(int row, int column) const;
 
 public:
-    explicit Board(int board[3][3]);
+    explicit Board(const std::vector<Tile*> &board);
+    ~Board() override;
+
     void onTileClick(int row, int column);
 
-    int getBoardRows();
-    int getBoardCols();
+    int getSize() const;
 
-    int getTile(int row, int column) const;
+    Tile* getTile(int row, int column) const;
+
     bool isSolved() const;
-    void printBoard();
+
+    void printBoard() const;
 };
 
 

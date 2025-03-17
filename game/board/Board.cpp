@@ -8,79 +8,86 @@
 #include <qdebug.h>
 #include <qstring.h>
 #include <sstream>
+#include <vector>
 
-Board::Board(int board[3][3]) {
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 3; j++) {
-            this->board[i][j] = board[i][j];
-        }
+#include "tiles/EmptyTile.h"
+
+
+int Board::toOneDimensionIndex(const int row, const int column) const {
+    if (row < 0 || row >= size || column < 0 || column >= size) throw std::invalid_argument("index out of bounds");
+    return row * size + column;
+}
+
+bool Board::isEmptyTile(const int row, const int column) const {
+    Tile *tile = board[toOneDimensionIndex(row, column)];
+    return dynamic_cast<EmptyTile *>(tile) != nullptr;
+}
+
+Board::Board(const std::vector<Tile *> &board) {
+    if (board.size() == 0) {
+        throw std::invalid_argument("board is empty");
+    }
+    const int boardSize = sqrt(board.size());
+    if (boardSize * boardSize != board.size()) {
+        throw std::invalid_argument("board must be square shaped");
+    }
+
+    this->size = boardSize;
+    this->board = board;
+}
+
+Board::~Board() {
+    for (const auto tile: board) {
+        delete tile;
     }
 }
 
 void Board::onTileClick(const int row, const int column) {
-    if (row < 0 || row >= rows || column < 0 || column >= columns) {
-        return;
-    }
+    if (isEmptyTile(row, column)) return;
 
-    int tile = board[row][column];
-    if (tile == 0) return;
+    Tile *tile = board[toOneDimensionIndex(row, column)];
 
-    if (row > 0 && board[row - 1][column] == 0) {
-        board[row][column] = 0;
-        board[row - 1][column] = tile;
-    } else if (row < rows - 1 && board[row + 1][column] == 0) {
-        board[row][column] = 0;
-        board[row + 1][column] = tile;
-    } else if (column > 0 && board[row][column - 1] == 0) {
-        board[row][column] = 0;
-        board[row][column - 1] = tile;
-    } else if (column < columns - 1 && board[row][column + 1] == 0) {
-        board[row][column] = 0;
-        board[row][column + 1] = tile;
+    if (row > 0 && isEmptyTile(row - 1, column)) {
+        board[toOneDimensionIndex(row, column)] = board[toOneDimensionIndex(row - 1, column)];
+        board[toOneDimensionIndex(row - 1, column)] = tile;
+    } else if (row < size - 1 && isEmptyTile(row + 1, column)) {
+        board[toOneDimensionIndex(row, column)] = board[toOneDimensionIndex(row + 1, column)];
+        board[toOneDimensionIndex(row + 1, column)] = tile;
+    } else if (column > 0 && isEmptyTile(row, column - 1)) {
+        board[toOneDimensionIndex(row, column)] = board[toOneDimensionIndex(row, column - 1)];
+        board[toOneDimensionIndex(row, column - 1)] = tile;
+    } else if (column < size - 1 && isEmptyTile(row, column + 1)) {
+        board[toOneDimensionIndex(row, column)] = board[toOneDimensionIndex(row, column + 1)];
+        board[toOneDimensionIndex(row, column + 1)] = tile;
     }
 }
 
-int Board::getBoardCols() {
-    return columns;
+int Board::getSize() const {
+    return size;
 }
 
-int Board::getTile(const int row, const int column) const {
-    return board[row][column];
+Tile *Board::getTile(const int row, const int column) const {
+    return board[toOneDimensionIndex(row, column)];
 }
 
 bool Board::isSolved() const {
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < columns; j++) {
-            auto expected = i * columns + j + 1;
-            if (i == rows - 1 && j == columns - 1) {
-                expected = 0;
-            }
-
-            const auto actual = board[i][j];
-
-            if (expected != actual) {
-                return false;
-            }
-        }
+    for (int i = 0; i < board.size(); i++) {
+        if (board[i]->getOrdinal() != i) return false;
     }
 
     return true;
 }
 
-void Board::printBoard() {
+void Board::printBoard() const {
     std::stringstream ss;
     qDebug() << "-------------------";
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < columns - 1; j++) {
-            ss << board[i][j] << "|";
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size - 1; j++) {
+            ss << board[toOneDimensionIndex(i, j)] << "|";
         }
-        ss << board[i][columns - 1];
+        ss << board[toOneDimensionIndex(i, size - 1)];
         qDebug() << ss.str();
         ss.str("");
     }
     qDebug() << "-------------------";
-}
-
-int Board::getBoardRows() {
-    return rows;
 }
