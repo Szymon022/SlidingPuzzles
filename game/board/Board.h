@@ -11,6 +11,7 @@
 class Board : public QObject {
     int size;
     std::vector<Tile *> board;
+    std::vector<Tile *> startPosition;
 
     int toOneDimensionIndex(int row, int column) const;
 
@@ -54,6 +55,11 @@ public:
     bool isSolved() const;
 
     void printBoard() const;
+
+    /**
+     * \brief Resets board to starting position in which the board was created.
+     */
+    void restart();
 };
 
 

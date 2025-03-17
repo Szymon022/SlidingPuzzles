@@ -36,17 +36,25 @@ Board::Board(const std::vector<int> &board) {
 
     this->size = boardSize;
     this->board = std::vector<Tile *>();
+    this->startPosition = std::vector<Tile *>();
     for (int i = 0; i < board.size(); i++) {
         if (board[i] == 0) {
-            this->board.push_back(new EmptyTile(i));
+            const auto emptyTile = new EmptyTile(i);
+            this->board.push_back(emptyTile);
+            this->startPosition.push_back(emptyTile);
         } else {
-            this->board.push_back(new NumberTile(i, board[i]));
+            const auto numberTile = new NumberTile(board[i] - 1, board[i]);
+            this->board.push_back(numberTile);
+            this->startPosition.push_back(numberTile);
         }
     }
 }
 
 Board::~Board() {
     for (const auto tile: board) {
+        delete tile;
+    }
+    for (const auto tile: startPosition) {
         delete tile;
     }
 }
@@ -80,6 +88,7 @@ Tile *Board::getTile(const int row, const int column) const {
 }
 
 bool Board::isSolved() const {
+    printBoard();
     for (int i = 0; i < board.size(); i++) {
         if (board[i]->getOrdinal() != i) return false;
     }
@@ -92,11 +101,17 @@ void Board::printBoard() const {
     qDebug() << "-------------------";
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size - 1; j++) {
-            ss << board[toOneDimensionIndex(i, j)] << "|";
+            ss << board[toOneDimensionIndex(i, j)]->getOrdinal() << "|";
         }
-        ss << board[toOneDimensionIndex(i, size - 1)];
+        ss << board[toOneDimensionIndex(i, size - 1)]->getOrdinal();
         qDebug() << ss.str();
         ss.str("");
     }
     qDebug() << "-------------------";
+}
+
+void Board::restart() {
+    for (int i = 0; i < board.size(); i++) {
+        board[i] = startPosition[i];
+    }
 }
