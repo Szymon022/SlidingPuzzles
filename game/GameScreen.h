@@ -44,6 +44,7 @@ signals:
 private:
     Ui::GameScreen *ui;
     Board *board;
+    int movesCounter{0};
 };
 
 

@@ -39,7 +39,7 @@ public:
      * @param row
      * @param column
      */
-    void onTileClick(int row, int column);
+    bool onTileClick(int row, int column);
 
     int getSize() const;
 

@@ -43,11 +43,14 @@ GameScreen::GameScreen(QWidget *parent) : QWidget(parent), ui(new Ui::GameScreen
 
 void GameScreen::restartBoard() {
     board->restart();
+    movesCounter = 0;
     renderBoard();
 }
 
 void GameScreen::onTileClick(int row, int column) {
-    board->onTileClick(row, column);
+    if (board->onTileClick(row, column)) {
+        movesCounter++;
+    }
     checkWinCondition();
     renderBoard();
 }
@@ -75,6 +78,10 @@ void GameScreen::renderBoard() {
             }
         }
     }
+    std::stringstream movesCounterTextBuilder;
+    movesCounterTextBuilder << "moves: ";
+    movesCounterTextBuilder << movesCounter;
+    ui->movesCounterLabel->setText(QString::fromStdString(movesCounterTextBuilder.str()));
 }
 
 void GameScreen::onNavigateToMainMenu() {

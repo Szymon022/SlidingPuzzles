@@ -56,24 +56,32 @@ Board::~Board() {
     }
 }
 
-void Board::onTileClick(const int row, const int column) {
-    if (isEmptyTile(row, column)) return;
+bool Board::onTileClick(const int row, const int column) {
+    if (isEmptyTile(row, column)) return false;
 
     Tile *tile = board[toOneDimensionIndex(row, column)];
 
     if (row > 0 && isEmptyTile(row - 1, column)) {
         board[toOneDimensionIndex(row, column)] = board[toOneDimensionIndex(row - 1, column)];
         board[toOneDimensionIndex(row - 1, column)] = tile;
-    } else if (row < size - 1 && isEmptyTile(row + 1, column)) {
+        return true;
+    }
+    if (row < size - 1 && isEmptyTile(row + 1, column)) {
         board[toOneDimensionIndex(row, column)] = board[toOneDimensionIndex(row + 1, column)];
         board[toOneDimensionIndex(row + 1, column)] = tile;
-    } else if (column > 0 && isEmptyTile(row, column - 1)) {
+        return true;
+    }
+    if (column > 0 && isEmptyTile(row, column - 1)) {
         board[toOneDimensionIndex(row, column)] = board[toOneDimensionIndex(row, column - 1)];
         board[toOneDimensionIndex(row, column - 1)] = tile;
-    } else if (column < size - 1 && isEmptyTile(row, column + 1)) {
+        return true;
+    }
+    if (column < size - 1 && isEmptyTile(row, column + 1)) {
         board[toOneDimensionIndex(row, column)] = board[toOneDimensionIndex(row, column + 1)];
         board[toOneDimensionIndex(row, column + 1)] = tile;
+        return true;
     }
+    return false;
 }
 
 int Board::getSize() const {
