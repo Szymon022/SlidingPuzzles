@@ -93,7 +93,6 @@ Tile *Board::getTile(const int row, const int column) const {
 }
 
 bool Board::isSolved() const {
-    printBoard();
     for (int i = 0; i < board.size(); i++) {
         if (board[i]->getOrdinal() != i) return false;
     }
