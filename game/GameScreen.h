@@ -38,13 +38,17 @@ public:
 private slots:
     void onNavigateToMainMenu();
 
+    void onTimerTick();
+
 signals:
     void navigateToMainMenu(bool popBackStack);
 
 private:
     Ui::GameScreen *ui;
     Board *board;
+    QTimer *timer = nullptr;
     int movesCounter{0};
+    int secondsCounter{0};
 };
 
 

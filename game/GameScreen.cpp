@@ -7,6 +7,7 @@
 #include "GameScreen.h"
 
 #include <QStackedWidget>
+#include <QTimer>
 
 #include "ui_GameScreen.h"
 #include "board/tiles/EmptyTile.h"
@@ -43,11 +44,22 @@ GameScreen::GameScreen(QWidget *parent) : QWidget(parent), ui(new Ui::GameScreen
 
 void GameScreen::restartBoard() {
     board->restart();
+    timer->stop();
+    delete timer;
+    timer = nullptr;
     movesCounter = 0;
+    secondsCounter = 0;
     renderBoard();
 }
 
 void GameScreen::onTileClick(int row, int column) {
+    if (board->isSolved()) return;
+    if (timer == nullptr) {
+        timer = new QTimer(this);
+        connect(timer, &QTimer::timeout, this, &GameScreen::onTimerTick);
+        timer->setInterval(1000);
+        timer->start();
+    }
     if (board->onTileClick(row, column)) {
         movesCounter++;
     }
@@ -58,6 +70,7 @@ void GameScreen::onTileClick(int row, int column) {
 void GameScreen::checkWinCondition() const {
     if (board->isSolved()) {
         qDebug() << "GAME WIN";
+        timer->stop();
     }
 }
 
@@ -78,14 +91,26 @@ void GameScreen::renderBoard() {
             }
         }
     }
-    std::stringstream movesCounterTextBuilder;
-    movesCounterTextBuilder << "moves: ";
-    movesCounterTextBuilder << movesCounter;
-    ui->movesCounterLabel->setText(QString::fromStdString(movesCounterTextBuilder.str()));
+    std::stringstream ss;
+    ss << "moves: ";
+    ss << movesCounter;
+    ui->movesCounterLabel->setText(QString::fromStdString(ss.str()));
+
+    ss.str("");
+
+    ui->timerLabel->setText(QString::fromStdString(
+            std::format("{}:{}{}", secondsCounter / 60, secondsCounter % 60 / 10, secondsCounter % 60 % 10)
+        )
+    );
 }
 
 void GameScreen::onNavigateToMainMenu() {
     emit navigateToMainMenu(true);
+}
+
+void GameScreen::onTimerTick() {
+    secondsCounter++;
+    renderBoard();
 }
 
 GameScreen::~GameScreen() {

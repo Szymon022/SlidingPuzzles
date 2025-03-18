@@ -40,6 +40,12 @@
           <layout class="QHBoxLayout" name="horizontalLayout_5">
               <item>
                   <widget class="QLabel" name="movesCounterLabel">
+                      <property name="minimumSize">
+                          <size>
+                              <width>0</width>
+                              <height>96</height>
+                          </size>
+                      </property>
                       <property name="font">
                           <font>
                               <pointsize>16</pointsize>
@@ -49,6 +55,23 @@
                       </property>
                       <property name="text">
                           <string>moves: 0</string>
+                      </property>
+                      <property name="alignment">
+                          <set>Qt::AlignmentFlag::AlignCenter</set>
+                      </property>
+                  </widget>
+              </item>
+              <item>
+                  <widget class="QLabel" name="timerLabel">
+                      <property name="font">
+                          <font>
+                              <pointsize>16</pointsize>
+                              <bold>true</bold>
+                              <underline>true</underline>
+                          </font>
+                      </property>
+                      <property name="text">
+                          <string>0:00</string>
                       </property>
                       <property name="alignment">
                           <set>Qt::AlignmentFlag::AlignCenter</set>
