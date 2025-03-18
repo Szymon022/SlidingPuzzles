@@ -13,36 +13,37 @@
 
 QT_BEGIN_NAMESPACE
 
-namespace Ui
-{
+namespace Ui {
     class GameScreen;
 }
 
 QT_END_NAMESPACE
 
-class GameScreen : public QWidget
-{
+class GameScreen : public QWidget {
     Q_OBJECT
 
 public:
-    explicit GameScreen(QWidget* parent = nullptr);
+    explicit GameScreen(QWidget *parent = nullptr);
 
     void restartBoard();
 
     void onTileClick(int row, int column);
+
     void checkWinCondition() const;
+
     void renderBoard();
+
     ~GameScreen() override;
 
 private slots:
     void onNavigateToMainMenu();
 
 signals:
-    void navigateToMainMenu();
+    void navigateToMainMenu(bool popBackStack);
 
 private:
-    Ui::GameScreen* ui;
-    Board* board;
+    Ui::GameScreen *ui;
+    Board *board;
 };
 
 

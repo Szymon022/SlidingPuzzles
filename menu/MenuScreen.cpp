@@ -5,6 +5,8 @@
 // You may need to build the project (run Qt uic code generator) to get "ui_MainMenu.h" resolved
 
 #include "MenuScreen.h"
+#include <QPushButton>
+
 #include "ui_MenuScreen.h"
 
 

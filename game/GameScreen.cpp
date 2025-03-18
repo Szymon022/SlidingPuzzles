@@ -78,7 +78,7 @@ void GameScreen::renderBoard() {
 }
 
 void GameScreen::onNavigateToMainMenu() {
-    emit navigateToMainMenu();
+    emit navigateToMainMenu(true);
 }
 
 GameScreen::~GameScreen() {

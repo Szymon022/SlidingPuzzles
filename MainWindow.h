@@ -6,6 +6,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <stack>
 
 #include "game/GameScreen.h"
 #include "menu/MenuScreen.h"
@@ -28,13 +29,13 @@ public:
     ~MainWindow() override;
 
 public slots:
-    void handleNavigateToMainMenu() const;
-    void handleNavigateToNewGame() const;
+    void handleNavigateToMainMenu(bool popBackStack);
+
+    void handleNavigateToNewGame();
 
 private:
     Ui::MainWindow *ui;
-    MenuScreen main_menu;
-    GameScreen game_screen;
+    std::stack<QWidget *> navigationStack;
 };
 
 
