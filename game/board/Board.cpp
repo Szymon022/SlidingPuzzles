@@ -54,9 +54,6 @@ Board::~Board() {
     for (const auto tile: board) {
         delete tile;
     }
-    for (const auto tile: startPosition) {
-        delete tile;
-    }
 }
 
 void Board::onTileClick(const int row, const int column) {
