@@ -43,6 +43,8 @@ public:
 
     ~GameScreenViewModel() override;
 
+    void getInitialState();
+
     void onBoardClick(int row, int column);
 
     void onRestartClick();

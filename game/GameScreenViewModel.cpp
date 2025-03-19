@@ -10,9 +10,8 @@
 void GameScreenViewModel::startTimer() {
     if (timer == nullptr) {
         timer = new QTimer(this);
-    } else if (!timer->isActive()) {
-        connect(timer, &QTimer::timeout, this, &GameScreenViewModel::onTimerTick);
         timer->setInterval(1000);
+        connect(timer, &QTimer::timeout, this, &GameScreenViewModel::onTimerTick);
         timer->start();
     }
 }
@@ -29,13 +28,13 @@ void GameScreenViewModel::emitUpdateTimerState(const int time) {
 
     ss << time / 60000;
     ss << ":";
-    ss << std::setw(2) << std::setfill('0') << time % 60000;
+    ss << std::setw(2) << std::setfill('0') << time / 1000 % 60;
 
     emit updateTimerState(QString::fromStdString(ss.str()));
 }
 
 void GameScreenViewModel::emitUpdateMovesCounterState(const int movesCounter) {
-    emit updateMovesCounterState(QString::number(movesCounter));
+    emit updateMovesCounterState(QString("Moves: ") + QString::number(movesCounter));
 }
 
 void GameScreenViewModel::emitUpdateBoardState(const Board *board) {
@@ -56,6 +55,7 @@ void GameScreenViewModel::emitUpdateBoardState(const Board *board) {
 
 void GameScreenViewModel::onTimerTick() {
     gameDurationMillis += 1000;
+    emitUpdateTimerState(gameDurationMillis);
 }
 
 GameScreenViewModel::GameScreenViewModel() {
@@ -70,11 +70,17 @@ GameScreenViewModel::~GameScreenViewModel() {
     delete this->board;
 }
 
+void GameScreenViewModel::getInitialState() {
+    emitUpdateBoardState(board);
+    emitUpdateMovesCounterState(movesCounter);
+    emitUpdateTimerState(gameDurationMillis);
+}
+
 void GameScreenViewModel::onBoardClick(const int row, const int column) {
     if (isSolved) return;
     if (board->onTileClick(row, column) == false) return;
 
-    emitUpdateMovesCounterState(movesCounter);
+    emitUpdateMovesCounterState(++movesCounter);
 
     if (timer == nullptr) {
         startTimer();
