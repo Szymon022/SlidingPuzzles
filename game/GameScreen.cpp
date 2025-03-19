@@ -12,14 +12,10 @@ GameScreen::GameScreen(QWidget *parent) : QWidget(parent), ui(new Ui::GameScreen
     ui->setupUi(this);
 
     viewModel = new GameScreenViewModel();
-
-    const int boardSize = 3;
+    this->boardSize = 3;
 
     this->rows = std::vector<QHBoxLayout *>();
     this->buttons = std::vector<QPushButton *>();
-
-    const int boardSizePx = 900;
-    const int tileSizePx = boardSizePx / boardSize;
 
     for (int i = 0; i < boardSize; i++) {
         auto row = new QHBoxLayout();
@@ -28,8 +24,6 @@ GameScreen::GameScreen(QWidget *parent) : QWidget(parent), ui(new Ui::GameScreen
         for (int j = 0; j < boardSize; j++) {
             const auto button = new QPushButton("");
             button->setParent(dynamic_cast<QWidget *>(row));
-            button->setMinimumSize(tileSizePx, tileSizePx);
-            button->setMaximumSize(tileSizePx, tileSizePx);
             auto font = button->font();
             font.setPointSize(50);
             font.setBold(true);
@@ -78,6 +72,21 @@ void GameScreen::updateGameWonState(const bool isGameWon) const {
     if (isGameWon) {
         qDebug("GAME WON!");
     }
+}
+
+void GameScreen::resizeButtons() {
+    const int boardSizePx = std::min(window()->height() - 150, window()->width() - 500);
+    const int tileSizePx = boardSizePx / boardSize;
+
+    for (int i = 0; i < buttons.size(); i++) {
+        buttons[i]->setMinimumSize(tileSizePx, tileSizePx);
+        buttons[i]->setMaximumSize(tileSizePx, tileSizePx);
+    }
+}
+
+void GameScreen::resizeEvent(QResizeEvent *event) {
+    QWidget::resizeEvent(event);
+    resizeButtons();
 }
 
 GameScreen::~GameScreen() {

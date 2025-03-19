@@ -43,12 +43,17 @@ private slots:
 
     void updateGameWonState(bool isGameWon) const;
 
+    void resizeButtons();
+
 signals:
     void navigateToMainMenu(bool popBackStack);
 
 private:
     Ui::GameScreen *ui;
     GameScreenViewModel *viewModel;
+    int boardSize;
+
+    void resizeEvent(QResizeEvent *event) override;
 };
 
 
