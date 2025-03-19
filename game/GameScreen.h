@@ -8,6 +8,7 @@
 #include <QPushButton>
 #include <QWidget>
 
+#include "GameScreenViewModel.h"
 #include "board/Board.h"
 
 
@@ -25,30 +26,23 @@ class GameScreen : public QWidget {
 public:
     explicit GameScreen(QWidget *parent = nullptr);
 
-    void restartBoard();
-
-    void onTileClick(int row, int column);
-
-    void checkWinCondition() const;
-
-    void renderBoard();
-
     ~GameScreen() override;
 
 private slots:
     void onNavigateToMainMenu();
 
-    void onTimerTick();
+    void updateTimerLabel(const QString &label) const;
+
+    void updateMovesCounterLabel(const QString &label) const;
+
+    void updateBoard(const std::vector<QString> &board) const;
 
 signals:
     void navigateToMainMenu(bool popBackStack);
 
 private:
     Ui::GameScreen *ui;
-    Board *board;
-    QTimer *timer = nullptr;
-    int movesCounter{0};
-    int secondsCounter{0};
+    GameScreenViewModel *viewModel;
 };
 
 

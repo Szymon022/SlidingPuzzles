@@ -10,14 +10,11 @@
 #include <QTimer>
 
 #include "ui_GameScreen.h"
-#include "board/tiles/EmptyTile.h"
-#include "board/tiles/NumberTile.h"
-
 
 GameScreen::GameScreen(QWidget *parent) : QWidget(parent), ui(new Ui::GameScreen) {
     ui->setupUi(this);
 
-    this->board = new Board({2, 8, 6, 7, 1, 5, 4, 3, 0});
+    viewModel = new GameScreenViewModel();
 
     QPushButton *buttons[3][3] = {
         {ui->pushButton, ui->pushButton_2, ui->pushButton_3},
@@ -25,8 +22,12 @@ GameScreen::GameScreen(QWidget *parent) : QWidget(parent), ui(new Ui::GameScreen
         {ui->pushButton_7, ui->pushButton_8, ui->pushButton_9}
     };
 
-    connect(ui->restartBoardButton, &QPushButton::clicked, this, &GameScreen::restartBoard);
     connect(ui->navigateToMainMenuButton, &QPushButton::clicked, this, &GameScreen::onNavigateToMainMenu);
+    connect(ui->restartBoardButton, &QPushButton::clicked, this, [this] { viewModel->onRestartClick(); });
+
+    connect(viewModel, &GameScreenViewModel::updateMovesCounterState, this, &GameScreen::updateMovesCounterLabel);
+    connect(viewModel, &GameScreenViewModel::updateTimerState, this, &GameScreen::updateTimerLabel);
+    connect(viewModel, &GameScreenViewModel::updateBoardState, this, &GameScreen::updateBoard);
 
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
@@ -36,84 +37,39 @@ GameScreen::GameScreen(QWidget *parent) : QWidget(parent), ui(new Ui::GameScreen
             font.setPointSize(50);
             font.setBold(true);
             buttons[i][j]->setFont(font);
-            connect(buttons[i][j], &QPushButton::clicked, this, [this, i, j] { onTileClick(i, j); });
+            connect(buttons[i][j], &QPushButton::clicked, this, [this, i, j] { viewModel->onBoardClick(i, j); });
         }
     }
-    renderBoard();
-}
 
-void GameScreen::restartBoard() {
-    board->restart();
-    timer->stop();
-    delete timer;
-    timer = nullptr;
-    movesCounter = 0;
-    secondsCounter = 0;
-    renderBoard();
-}
-
-void GameScreen::onTileClick(int row, int column) {
-    if (board->isSolved()) return;
-    if (timer == nullptr) {
-        timer = new QTimer(this);
-        connect(timer, &QTimer::timeout, this, &GameScreen::onTimerTick);
-        timer->setInterval(1000);
-        timer->start();
-    }
-    if (board->onTileClick(row, column)) {
-        movesCounter++;
-    }
-    checkWinCondition();
-    renderBoard();
-}
-
-void GameScreen::checkWinCondition() const {
-    if (board->isSolved()) {
-        qDebug() << "GAME WIN";
-        timer->stop();
-    }
-}
-
-
-void GameScreen::renderBoard() {
-    QPushButton *buttons[3][3] = {
-        {ui->pushButton, ui->pushButton_2, ui->pushButton_3},
-        {ui->pushButton_4, ui->pushButton_5, ui->pushButton_6},
-        {ui->pushButton_7, ui->pushButton_8, ui->pushButton_9}
-    };
-    for (int i = 0; i < this->board->getSize(); i++) {
-        for (int j = 0; j < this->board->getSize(); j++) {
-            auto tile = board->getTile(i, j);
-            if (dynamic_cast<EmptyTile *>(tile) != nullptr) {
-                buttons[i][j]->setText("");
-            } else if (auto numberTile = dynamic_cast<NumberTile *>(tile); numberTile != nullptr) {
-                buttons[i][j]->setText(QString::number(numberTile->getValue()));
-            }
-        }
-    }
-    std::stringstream ss;
-    ss << "moves: ";
-    ss << movesCounter;
-    ui->movesCounterLabel->setText(QString::fromStdString(ss.str()));
-
-    ss.str("");
-
-    ui->timerLabel->setText(QString::fromStdString(
-            std::format("{}:{}{}", secondsCounter / 60, secondsCounter % 60 / 10, secondsCounter % 60 % 10)
-        )
-    );
+    viewModel->getInitialState();
 }
 
 void GameScreen::onNavigateToMainMenu() {
     emit navigateToMainMenu(true);
 }
 
-void GameScreen::onTimerTick() {
-    secondsCounter++;
-    renderBoard();
+
+void GameScreen::updateTimerLabel(const QString &label) const {
+    ui->timerLabel->setText(label);
+}
+
+void GameScreen::updateMovesCounterLabel(const QString &label) const {
+    ui->movesCounterLabel->setText(label);
+}
+
+void GameScreen::updateBoard(const std::vector<QString> &board) const {
+    QPushButton *buttons[9] = {
+        ui->pushButton, ui->pushButton_2, ui->pushButton_3,
+        ui->pushButton_4, ui->pushButton_5, ui->pushButton_6,
+        ui->pushButton_7, ui->pushButton_8, ui->pushButton_9
+    };
+
+    for (int i = 0; i < 9; i++) {
+        buttons[i]->setText(board[i]);
+    }
 }
 
 GameScreen::~GameScreen() {
-    delete board;
+    delete viewModel;
     delete ui;
 }
