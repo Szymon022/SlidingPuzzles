@@ -15,6 +15,72 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+           <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_4">
+                   <item>
+                       <widget class="QPushButton" name="navigateToMainMenuButton">
+                           <property name="text">
+                               <string>Exit</string>
+                           </property>
+                       </widget>
+                   </item>
+                   <item>
+                       <widget class="QPushButton" name="restartBoardButton">
+                           <property name="text">
+                               <string>Restart</string>
+                           </property>
+                       </widget>
+                   </item>
+               </layout>
+           </item>
+       </layout>
+   </item>
+      <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_5">
+              <item>
+                  <widget class="QLabel" name="movesCounterLabel">
+                      <property name="minimumSize">
+                          <size>
+                              <width>0</width>
+                              <height>96</height>
+                          </size>
+                      </property>
+                      <property name="font">
+                          <font>
+                              <pointsize>16</pointsize>
+                              <bold>true</bold>
+                              <underline>true</underline>
+                          </font>
+                      </property>
+                      <property name="text">
+                          <string>moves: 0</string>
+                      </property>
+                      <property name="alignment">
+                          <set>Qt::AlignmentFlag::AlignCenter</set>
+                      </property>
+                  </widget>
+              </item>
+              <item>
+                  <widget class="QLabel" name="timerLabel">
+                      <property name="font">
+                          <font>
+                              <pointsize>16</pointsize>
+                              <bold>true</bold>
+                              <underline>true</underline>
+                          </font>
+                      </property>
+                      <property name="text">
+                          <string>0:00</string>
+                      </property>
+                      <property name="alignment">
+                          <set>Qt::AlignmentFlag::AlignCenter</set>
+                      </property>
+                  </widget>
+              </item>
+          </layout>
+   </item>
+      <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="spacing">
       <number>0</number>

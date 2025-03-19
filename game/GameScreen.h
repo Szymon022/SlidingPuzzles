@@ -8,38 +8,43 @@
 #include <QPushButton>
 #include <QWidget>
 
-#include "Board.h"
+#include "GameScreenViewModel.h"
+#include "board/Board.h"
 
 
 QT_BEGIN_NAMESPACE
 
-namespace Ui
-{
+namespace Ui {
     class GameScreen;
 }
 
 QT_END_NAMESPACE
 
-class GameScreen : public QWidget
-{
+class GameScreen : public QWidget {
     Q_OBJECT
 
 public:
-    explicit GameScreen(QWidget* parent = nullptr);
-    void onTileClick(int row, int column);
-    void checkWinCondition() const;
-    void renderBoard();
+    explicit GameScreen(QWidget *parent = nullptr);
+
     ~GameScreen() override;
 
 private slots:
     void onNavigateToMainMenu();
 
+    void updateTimerLabel(const QString &label) const;
+
+    void updateMovesCounterLabel(const QString &label) const;
+
+    void updateBoard(const std::vector<QString> &board) const;
+
+    void updateGameWonState(bool isGameWon) const;
+
 signals:
-    void navigateToMainMenu();
+    void navigateToMainMenu(bool popBackStack);
 
 private:
-    Ui::GameScreen* ui;
-    Board* board;
+    Ui::GameScreen *ui;
+    GameScreenViewModel *viewModel;
 };
 
 

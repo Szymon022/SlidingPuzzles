@@ -7,87 +7,76 @@
 #include "GameScreen.h"
 
 #include <QStackedWidget>
+#include <QTimer>
 
 #include "ui_GameScreen.h"
 
-
-GameScreen::GameScreen(QWidget* parent) :
-    QWidget(parent), ui(new Ui::GameScreen)
-{
+GameScreen::GameScreen(QWidget *parent) : QWidget(parent), ui(new Ui::GameScreen) {
     ui->setupUi(this);
 
-    int x[3][3] = {{2, 8, 6}, {7, 1, 5}, {4, 3, 0}};
-    this->board = new Board(x);
-    renderBoard();
+    viewModel = new GameScreenViewModel();
 
-    QPushButton* buttons[3][3] = {
+    QPushButton *buttons[3][3] = {
         {ui->pushButton, ui->pushButton_2, ui->pushButton_3},
         {ui->pushButton_4, ui->pushButton_5, ui->pushButton_6},
         {ui->pushButton_7, ui->pushButton_8, ui->pushButton_9}
     };
 
-    for (int i = 0; i < 3; i++)
-    {
-        for (int j = 0; j < 3; j++)
-        {
+    connect(ui->navigateToMainMenuButton, &QPushButton::clicked, this, &GameScreen::onNavigateToMainMenu);
+    connect(ui->restartBoardButton, &QPushButton::clicked, this, [this] { viewModel->onRestartClick(); });
+
+    connect(viewModel, &GameScreenViewModel::updateMovesCounterState, this, &GameScreen::updateMovesCounterLabel);
+    connect(viewModel, &GameScreenViewModel::updateTimerState, this, &GameScreen::updateTimerLabel);
+    connect(viewModel, &GameScreenViewModel::updateBoardState, this, &GameScreen::updateBoard);
+    connect(viewModel, &GameScreenViewModel::updateGameWonState, this, &GameScreen::updateGameWonState);
+
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
             buttons[i][j]->setMinimumSize(200, 200);
             buttons[i][j]->setMaximumSize(200, 200);
             auto font = buttons[i][j]->font();
             font.setPointSize(50);
             font.setBold(true);
             buttons[i][j]->setFont(font);
-            connect(buttons[i][j], &QPushButton::clicked, this, [this, i, j] { onTileClick(i, j); });
+            connect(buttons[i][j], &QPushButton::clicked, this, [this, i, j] { viewModel->onBoardClick(i, j); });
         }
     }
+
+    viewModel->getInitialState();
 }
 
-void GameScreen::onTileClick(int row, int column)
-{
-    board->onTileClick(row, column);
-    checkWinCondition();
-    renderBoard();
-}
-
-void GameScreen::checkWinCondition() const
-{
-    if (board->isSolved())
-    {
-        qDebug() << "GAME WIN";
-    }
+void GameScreen::onNavigateToMainMenu() {
+    emit navigateToMainMenu(true);
 }
 
 
-void GameScreen::renderBoard()
-{
-    QPushButton* buttons[3][3] = {
-        {ui->pushButton, ui->pushButton_2, ui->pushButton_3},
-        {ui->pushButton_4, ui->pushButton_5, ui->pushButton_6},
-        {ui->pushButton_7, ui->pushButton_8, ui->pushButton_9}
+void GameScreen::updateTimerLabel(const QString &label) const {
+    ui->timerLabel->setText(label);
+}
+
+void GameScreen::updateMovesCounterLabel(const QString &label) const {
+    ui->movesCounterLabel->setText(label);
+}
+
+void GameScreen::updateBoard(const std::vector<QString> &board) const {
+    QPushButton *buttons[9] = {
+        ui->pushButton, ui->pushButton_2, ui->pushButton_3,
+        ui->pushButton_4, ui->pushButton_5, ui->pushButton_6,
+        ui->pushButton_7, ui->pushButton_8, ui->pushButton_9
     };
-    for (int i = 0; i < this->board->getBoardRows(); i++)
-    {
-        for (int j = 0; j < this->board->getBoardCols(); j++)
-        {
-            int tile = board->getTile(i, j);
-            if (tile == 0)
-            {
-                buttons[i][j]->setText("");
-            }
-            else
-            {
-                buttons[i][j]->setText(QString::number(tile));
-            }
-        }
+
+    for (int i = 0; i < 9; i++) {
+        buttons[i]->setText(board[i]);
     }
 }
 
-void GameScreen::onNavigateToMainMenu()
-{
-    emit navigateToMainMenu();
+void GameScreen::updateGameWonState(const bool isGameWon) const {
+    if (isGameWon) {
+        qDebug("GAME WON!");
+    }
 }
 
-GameScreen::~GameScreen()
-{
-    delete board;
+GameScreen::~GameScreen() {
+    delete viewModel;
     delete ui;
 }
