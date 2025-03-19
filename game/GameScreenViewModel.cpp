@@ -74,18 +74,21 @@ void GameScreenViewModel::getInitialState() {
     emitUpdateBoardState(board);
     emitUpdateMovesCounterState(movesCounter);
     emitUpdateTimerState(gameDurationMillis);
+    emit updateGameWonState(false);
 }
 
 void GameScreenViewModel::onBoardClick(const int row, const int column) {
-    if (isSolved) return;
+    if (board->isSolved()) return;
     if (board->onTileClick(row, column) == false) return;
 
-    emitUpdateMovesCounterState(++movesCounter);
-
-    if (timer == nullptr) {
+    if (board->isSolved()) {
+        stopTimer();
+        emit updateGameWonState(true);
+    } else {
         startTimer();
     }
 
+    emitUpdateMovesCounterState(++movesCounter);
     emitUpdateBoardState(board);
 }
 
@@ -93,10 +96,10 @@ void GameScreenViewModel::onRestartClick() {
     stopTimer();
     gameDurationMillis = 0;
     movesCounter = 0;
-    isSolved = false;
     board->restart();
 
     emitUpdateBoardState(board);
     emitUpdateTimerState(gameDurationMillis);
     emitUpdateMovesCounterState(movesCounter);
+    emit updateGameWonState(false);
 }

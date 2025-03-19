@@ -37,6 +37,8 @@ private slots:
 
     void updateBoard(const std::vector<QString> &board) const;
 
+    void updateGameWonState(bool isGameWon) const;
+
 signals:
     void navigateToMainMenu(bool popBackStack);
 

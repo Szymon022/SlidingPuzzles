@@ -28,6 +28,7 @@ GameScreen::GameScreen(QWidget *parent) : QWidget(parent), ui(new Ui::GameScreen
     connect(viewModel, &GameScreenViewModel::updateMovesCounterState, this, &GameScreen::updateMovesCounterLabel);
     connect(viewModel, &GameScreenViewModel::updateTimerState, this, &GameScreen::updateTimerLabel);
     connect(viewModel, &GameScreenViewModel::updateBoardState, this, &GameScreen::updateBoard);
+    connect(viewModel, &GameScreenViewModel::updateGameWonState, this, &GameScreen::updateGameWonState);
 
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
@@ -66,6 +67,12 @@ void GameScreen::updateBoard(const std::vector<QString> &board) const {
 
     for (int i = 0; i < 9; i++) {
         buttons[i]->setText(board[i]);
+    }
+}
+
+void GameScreen::updateGameWonState(const bool isGameWon) const {
+    if (isGameWon) {
+        qDebug("GAME WON!");
     }
 }
 

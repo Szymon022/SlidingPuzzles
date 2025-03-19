@@ -16,7 +16,6 @@ class GameScreenViewModel : public QObject {
     Board *board;
     int movesCounter{0};
     int gameDurationMillis{0};
-    bool isSolved{false};
 
     void startTimer();
 
@@ -34,6 +33,8 @@ signals:
     void updateMovesCounterState(QString label);
 
     void updateBoardState(std::vector<QString> &board);
+
+    void updateGameWonState(bool isGameWon);
 
 private slots:
     void onTimerTick();
