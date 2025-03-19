@@ -6,9 +6,6 @@
 
 #include "GameScreen.h"
 
-#include <QStackedWidget>
-#include <QTimer>
-
 #include "ui_GameScreen.h"
 
 GameScreen::GameScreen(QWidget *parent) : QWidget(parent), ui(new Ui::GameScreen) {
@@ -16,11 +13,36 @@ GameScreen::GameScreen(QWidget *parent) : QWidget(parent), ui(new Ui::GameScreen
 
     viewModel = new GameScreenViewModel();
 
-    QPushButton *buttons[3][3] = {
-        {ui->pushButton, ui->pushButton_2, ui->pushButton_3},
-        {ui->pushButton_4, ui->pushButton_5, ui->pushButton_6},
-        {ui->pushButton_7, ui->pushButton_8, ui->pushButton_9}
-    };
+    const int boardSize = 3;
+
+    this->rows = std::vector<QHBoxLayout *>();
+    this->buttons = std::vector<QPushButton *>();
+
+    const int boardSizePx = 900;
+    const int tileSizePx = boardSizePx / boardSize;
+
+    for (int i = 0; i < boardSize; i++) {
+        auto row = new QHBoxLayout();
+        row->setParent(qobject_cast<QWidget *>(ui->boardBaseVerticalLayout));
+        row->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Expanding, QSizePolicy::Fixed));
+        for (int j = 0; j < boardSize; j++) {
+            const auto button = new QPushButton("");
+            button->setParent(dynamic_cast<QWidget *>(row));
+            button->setMinimumSize(tileSizePx, tileSizePx);
+            button->setMaximumSize(tileSizePx, tileSizePx);
+            auto font = button->font();
+            font.setPointSize(50);
+            font.setBold(true);
+            button->setFont(font);
+            connect(button, &QPushButton::clicked, this, [this, i, j] { viewModel->onBoardClick(i, j); });
+
+            row->addWidget(button);
+            buttons.push_back(button);
+        }
+        row->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Expanding, QSizePolicy::Fixed));
+        ui->boardBaseVerticalLayout->addLayout(row);
+        rows.push_back(row);
+    }
 
     connect(ui->navigateToMainMenuButton, &QPushButton::clicked, this, &GameScreen::onNavigateToMainMenu);
     connect(ui->restartBoardButton, &QPushButton::clicked, this, [this] { viewModel->onRestartClick(); });
@@ -29,18 +51,6 @@ GameScreen::GameScreen(QWidget *parent) : QWidget(parent), ui(new Ui::GameScreen
     connect(viewModel, &GameScreenViewModel::updateTimerState, this, &GameScreen::updateTimerLabel);
     connect(viewModel, &GameScreenViewModel::updateBoardState, this, &GameScreen::updateBoard);
     connect(viewModel, &GameScreenViewModel::updateGameWonState, this, &GameScreen::updateGameWonState);
-
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 3; j++) {
-            buttons[i][j]->setMinimumSize(200, 200);
-            buttons[i][j]->setMaximumSize(200, 200);
-            auto font = buttons[i][j]->font();
-            font.setPointSize(50);
-            font.setBold(true);
-            buttons[i][j]->setFont(font);
-            connect(buttons[i][j], &QPushButton::clicked, this, [this, i, j] { viewModel->onBoardClick(i, j); });
-        }
-    }
 
     viewModel->getInitialState();
 }
@@ -59,12 +69,6 @@ void GameScreen::updateMovesCounterLabel(const QString &label) const {
 }
 
 void GameScreen::updateBoard(const std::vector<QString> &board) const {
-    QPushButton *buttons[9] = {
-        ui->pushButton, ui->pushButton_2, ui->pushButton_3,
-        ui->pushButton_4, ui->pushButton_5, ui->pushButton_6,
-        ui->pushButton_7, ui->pushButton_8, ui->pushButton_9
-    };
-
     for (int i = 0; i < 9; i++) {
         buttons[i]->setText(board[i]);
     }
@@ -77,6 +81,12 @@ void GameScreen::updateGameWonState(const bool isGameWon) const {
 }
 
 GameScreen::~GameScreen() {
+    for (int i = 0; i < buttons.size(); i++) {
+        delete buttons[i];
+    }
+    for (int i = 0; i < rows.size(); i++) {
+        delete rows[i];
+    }
     delete viewModel;
     delete ui;
 }

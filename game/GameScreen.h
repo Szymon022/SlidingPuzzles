@@ -5,6 +5,7 @@
 #ifndef GAMESCREEN_H
 #define GAMESCREEN_H
 
+#include <QHBoxLayout>
 #include <QPushButton>
 #include <QWidget>
 
@@ -22,6 +23,9 @@ QT_END_NAMESPACE
 
 class GameScreen : public QWidget {
     Q_OBJECT
+
+    std::vector<QHBoxLayout *> rows;
+    std::vector<QPushButton *> buttons;
 
 public:
     explicit GameScreen(QWidget *parent = nullptr);
