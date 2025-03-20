@@ -31,6 +31,8 @@ public:
 public slots:
     void handleNavigateToMainMenu(bool popBackStack);
 
+    void handleNavigateToGameSettings();
+
     void handleNavigateToNewGame();
 
 private:

@@ -10,6 +10,9 @@
 
 GameSettingsScreen::GameSettingsScreen(QWidget *parent) : QWidget(parent), ui(new Ui::GameSettingsScreen) {
     ui->setupUi(this);
+
+    connect(ui->exitToMenuScreenButton, &QPushButton::clicked, this, [this] { emit navigateToMainMenu(true); });
+    connect(ui->startGameButton, &QPushButton::clicked, this, [this] { emit navigateToGameScreen(); });
 }
 
 GameSettingsScreen::~GameSettingsScreen() {

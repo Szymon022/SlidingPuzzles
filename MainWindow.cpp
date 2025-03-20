@@ -8,6 +8,7 @@
 #include "ui_MainWindow.h"
 #include "game/GameScreen.h"
 #include "menu/MenuScreen.h"
+#include "settings/GameSettingsScreen.h"
 
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
@@ -34,10 +35,21 @@ void MainWindow::handleNavigateToMainMenu(const bool popBackStack = false) {
     }
     const auto menuScreen = new MenuScreen();
 
-    connect(menuScreen, &MenuScreen::navigateToNewGame, this, &MainWindow::handleNavigateToNewGame);
+    connect(menuScreen, &MenuScreen::navigateToGameSettings, this, &MainWindow::handleNavigateToGameSettings);
 
     navigationStack.push(menuScreen);
     ui->stackedWidget->addWidget(menuScreen);
+    ui->stackedWidget->setCurrentIndex(navigationStack.size() - 1);
+}
+
+void MainWindow::handleNavigateToGameSettings() {
+    const auto gameSettings = new GameSettingsScreen();
+
+    connect(gameSettings, &GameSettingsScreen::navigateToGameScreen, this, &MainWindow::handleNavigateToNewGame);
+    connect(gameSettings, &GameSettingsScreen::navigateToMainMenu, this, &MainWindow::handleNavigateToMainMenu);
+
+    navigationStack.push(gameSettings);
+    ui->stackedWidget->addWidget(gameSettings);
     ui->stackedWidget->setCurrentIndex(navigationStack.size() - 1);
 }
 
