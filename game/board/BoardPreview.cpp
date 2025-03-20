@@ -8,13 +8,9 @@
 #include "ui_BoardPreview.h"
 
 
-BoardPreview::BoardPreview(int boardSize, QWidget *parent) : QWidget(parent), ui(new Ui::BoardPreview) {
-    ui->setupUi(this);
+void BoardPreview::createBoard(const int boardSize) {
 
-
-    this->boardSize = boardSize;
-    this->rows = std::vector<QHBoxLayout *>();
-    this->buttons = std::vector<QPushButton *>();
+    int tileSize = (window()->height() - 200) / boardSize;
 
     ui->verticalLayout->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Expanding, QSizePolicy::Fixed));
     for (int i = 0; i < boardSize; i++) {
@@ -30,8 +26,6 @@ BoardPreview::BoardPreview(int boardSize, QWidget *parent) : QWidget(parent), ui
             font.setBold(true);
             button->setFont(font);
             button->setEnabled(false);
-            button->setMinimumSize(200, 200);
-            button->setMaximumSize(200, 200);
 
             row->addWidget(button);
             buttons.push_back(button);
@@ -43,10 +37,56 @@ BoardPreview::BoardPreview(int boardSize, QWidget *parent) : QWidget(parent), ui
     ui->verticalLayout->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Expanding, QSizePolicy::Fixed));
 }
 
+BoardPreview::BoardPreview(int boardSize, QWidget *parent) : QWidget(parent), ui(new Ui::BoardPreview) {
+    ui->setupUi(this);
+
+
+    this->boardSize = boardSize;
+    this->rows = std::vector<QHBoxLayout *>();
+    this->buttons = std::vector<QPushButton *>();
+
+    createBoard(boardSize);
+}
+
 
 BoardPreview::~BoardPreview() {
+    for (int i = 0; i < buttons.size(); i++) {
+        delete buttons[i];
+    }
+    for (int i = 0; i < rows.size(); i++) {
+        delete rows[i];
+    }
     delete ui;
 }
 
-void BoardPreview::onUpdateBoardPreview(int size) {
+void BoardPreview::onUpdateBoardSize(const int size) {
+    if (this->boardSize == size) return;
+    this->boardSize = size;
+
+    for (int i = 0; i < buttons.size(); i++) {
+        delete buttons[i];
+    }
+    buttons.clear();
+    for (int i = 0; i < rows.size(); i++) {
+        delete rows[i];
+    }
+    rows.clear();
+
+    createBoard(size);
+    resizeButtons();
+}
+
+void BoardPreview::resizeButtons() {
+    const int boardSizePx = window()->height() - 150;
+    const int tileSizePx = boardSizePx / boardSize;
+
+    for (int i = 0; i < buttons.size(); i++) {
+        buttons[i]->setMinimumSize(tileSizePx, tileSizePx);
+        buttons[i]->setMaximumSize(tileSizePx, tileSizePx);
+    }
+}
+
+void BoardPreview::resizeEvent(QResizeEvent *event) {
+    QWidget::resizeEvent(event);
+    resizeButtons();
 }

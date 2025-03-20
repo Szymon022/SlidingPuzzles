@@ -38,8 +38,9 @@ GameSettingsScreen::GameSettingsScreen(QWidget *parent) : QWidget(parent), ui(ne
         ui->boardSizeComboBox,
         &QComboBox::currentIndexChanged,
         this,
-        [this](int index) {
+        [this, boardPreviewWidget](int index) {
             viewModel->onSetBoardSize(boardSizes[index]);
+            boardPreviewWidget->onUpdateBoardSize(boardSizes[index]);
         }
     );
 }

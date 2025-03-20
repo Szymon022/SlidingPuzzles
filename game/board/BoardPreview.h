@@ -25,12 +25,18 @@ class BoardPreview : public QWidget {
     std::vector<QHBoxLayout *> rows;
     std::vector<QPushButton *> buttons;
 
+    void createBoard(int boardSize);
+
 public:
     explicit BoardPreview(int boardSize, QWidget *parent = nullptr);
 
     ~BoardPreview() override;
 
-    void onUpdateBoardPreview(int size);
+    void onUpdateBoardSize(int size);
+
+    void resizeButtons();
+
+    void resizeEvent(QResizeEvent *event) override;
 
 private:
     Ui::BoardPreview *ui;
