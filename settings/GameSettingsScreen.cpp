@@ -6,10 +6,13 @@
 
 #include "GameSettingsScreen.h"
 #include "ui_GameSettingsScreen.h"
+#include "../game/board/BoardPreview.h"
 
 
 GameSettingsScreen::GameSettingsScreen(QWidget *parent) : QWidget(parent), ui(new Ui::GameSettingsScreen) {
     ui->setupUi(this);
+    const auto boardPreviewWidget = new BoardPreview(3, this);
+    ui->boardPreviewVerticalLayout->addWidget(boardPreviewWidget);
     viewModel = new GameSettingsScreenViewModel();
 
     boardSizes = {3, 4, 5, 6, 7, 8, 9, 10};
