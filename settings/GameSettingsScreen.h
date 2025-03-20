@@ -7,6 +7,8 @@
 
 #include <QWidget>
 
+#include "GameSettingsScreenViewModel.h"
+
 
 QT_BEGIN_NAMESPACE
 
@@ -21,6 +23,7 @@ class GameSettingsScreen : public QWidget {
 
 signals:
     void navigateToMainMenu(bool popBackStack);
+
     void navigateToGameScreen();
 
 public:
@@ -30,6 +33,8 @@ public:
 
 private:
     Ui::GameSettingsScreen *ui;
+    GameSettingsScreenViewModel *viewModel;
+    std::vector<int> boardSizes;
 };
 
 

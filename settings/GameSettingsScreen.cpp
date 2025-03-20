@@ -10,11 +10,38 @@
 
 GameSettingsScreen::GameSettingsScreen(QWidget *parent) : QWidget(parent), ui(new Ui::GameSettingsScreen) {
     ui->setupUi(this);
+    viewModel = new GameSettingsScreenViewModel();
+
+    boardSizes = {3, 4, 5, 6, 7, 8, 9, 10};
+
+    for (const auto boardSize: boardSizes) {
+        const auto label = QString::number(boardSize) + "x" + QString::number(boardSize);
+        ui->boardSizeComboBox->addItem(label);
+    }
 
     connect(ui->exitToMenuScreenButton, &QPushButton::clicked, this, [this] { emit navigateToMainMenu(true); });
     connect(ui->startGameButton, &QPushButton::clicked, this, [this] { emit navigateToGameScreen(); });
+
+    connect(
+        ui->timeLimitLineEdit,
+        &QLineEdit::textChanged,
+        this,
+        [this](QString text) {
+            viewModel->onUpdateTimeLimit(text);
+        }
+    );
+
+    connect(
+        ui->boardSizeComboBox,
+        &QComboBox::currentIndexChanged,
+        this,
+        [this](int index) {
+            viewModel->onSetBoardSize(boardSizes[index]);
+        }
+    );
 }
 
 GameSettingsScreen::~GameSettingsScreen() {
+    delete viewModel;
     delete ui;
 }
