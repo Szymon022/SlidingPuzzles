@@ -16,7 +16,7 @@ void GameSettingsScreen::onUpdateBoardPreviewSize(const int boardSize) const {
 GameSettingsScreen::GameSettingsScreen(QWidget *parent) : QWidget(parent), ui(new Ui::GameSettingsScreen) {
     ui->setupUi(this);
     boardSizes = {3, 4, 5, 6, 7, 8, 9, 10};
-    viewModel = new GameSettingsScreenViewModel(boardSizes[0]);
+    viewModel = new GameSettingsScreenViewModel(boardSizes[0], ui->timeLimitLineEdit->text());
 
     for (const auto boardSize: boardSizes) {
         const auto label = QString::number(boardSize) + "x" + QString::number(boardSize);
@@ -28,7 +28,11 @@ GameSettingsScreen::GameSettingsScreen(QWidget *parent) : QWidget(parent), ui(ne
 
 
     connect(ui->exitToMenuScreenButton, &QPushButton::clicked, this, [this] { emit navigateToMainMenu(true); });
-    connect(ui->startGameButton, &QPushButton::clicked, this, [this] { emit navigateToGameScreen(); });
+    connect(ui->startGameButton, &QPushButton::clicked, this, [this] {
+        if (viewModel->validateInput()) {
+            emit navigateToGameScreen();
+        }
+    });
 
     connect(
         ui->timeLimitLineEdit,

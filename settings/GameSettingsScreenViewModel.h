@@ -12,21 +12,27 @@ class GameSettingsScreenViewModel : public QObject {
 
     int boardSize;
     int timeLimitMillis;
+    QString timeLimitLiteral;
     bool timeLimitEnabled;
 
     void emitUpdateBoardPreviewState();
+
 
 signals:
     void updateBoardPreviewState(int boardSize);
 
 public:
-    explicit GameSettingsScreenViewModel(int boardSize);
+    GameSettingsScreenViewModel() = delete;
+
+    GameSettingsScreenViewModel(int boardSize, QString timeLimitLiteral);
 
     void onSetBoardSize(int size);
 
     void onUpdateEnableTimeLimitCheckboxState(bool enabled);
 
-    void onUpdateTimeLimit(QString &timeLimit);
+    void onUpdateTimeLimit(const QString &timeLimit);
+
+    bool validateInput();
 };
 
 
