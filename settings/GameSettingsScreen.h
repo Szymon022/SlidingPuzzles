@@ -8,6 +8,7 @@
 #include <QWidget>
 
 #include "GameSettingsScreenViewModel.h"
+#include "../game/board/BoardPreview.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -26,6 +27,9 @@ signals:
 
     void navigateToGameScreen();
 
+private slots:
+    void onUpdateBoardPreviewSize(int boardSize) const;
+
 public:
     explicit GameSettingsScreen(QWidget *parent = nullptr);
 
@@ -35,6 +39,7 @@ private:
     Ui::GameSettingsScreen *ui;
     GameSettingsScreenViewModel *viewModel;
     std::vector<int> boardSizes;
+    BoardPreview *boardPreviewWidget;
 };
 
 

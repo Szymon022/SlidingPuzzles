@@ -9,18 +9,23 @@
 #include "../game/board/BoardPreview.h"
 
 
+void GameSettingsScreen::onUpdateBoardPreviewSize(const int boardSize) const {
+    boardPreviewWidget->onUpdateBoardSize(boardSize);
+}
+
 GameSettingsScreen::GameSettingsScreen(QWidget *parent) : QWidget(parent), ui(new Ui::GameSettingsScreen) {
     ui->setupUi(this);
-    const auto boardPreviewWidget = new BoardPreview(3, this);
-    ui->boardPreviewVerticalLayout->addWidget(boardPreviewWidget);
-    viewModel = new GameSettingsScreenViewModel();
-
     boardSizes = {3, 4, 5, 6, 7, 8, 9, 10};
+    viewModel = new GameSettingsScreenViewModel(boardSizes[0]);
 
     for (const auto boardSize: boardSizes) {
         const auto label = QString::number(boardSize) + "x" + QString::number(boardSize);
         ui->boardSizeComboBox->addItem(label);
     }
+
+    boardPreviewWidget = new BoardPreview(boardSizes[ui->boardSizeComboBox->currentIndex()], this);
+    ui->boardPreviewVerticalLayout->addWidget(boardPreviewWidget);
+
 
     connect(ui->exitToMenuScreenButton, &QPushButton::clicked, this, [this] { emit navigateToMainMenu(true); });
     connect(ui->startGameButton, &QPushButton::clicked, this, [this] { emit navigateToGameScreen(); });
@@ -38,10 +43,16 @@ GameSettingsScreen::GameSettingsScreen(QWidget *parent) : QWidget(parent), ui(ne
         ui->boardSizeComboBox,
         &QComboBox::currentIndexChanged,
         this,
-        [this, boardPreviewWidget](int index) {
+        [this](int index) {
             viewModel->onSetBoardSize(boardSizes[index]);
-            boardPreviewWidget->onUpdateBoardSize(boardSizes[index]);
         }
+    );
+
+    connect(
+        viewModel,
+        &GameSettingsScreenViewModel::updateBoardPreviewState,
+        this,
+        &GameSettingsScreen::onUpdateBoardPreviewSize
     );
 }
 

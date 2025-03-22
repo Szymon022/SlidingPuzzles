@@ -10,23 +10,23 @@
 class GameSettingsScreenViewModel : public QObject {
     Q_OBJECT
 
+    int boardSize;
+    int timeLimitMillis;
+    bool timeLimitEnabled;
+
+    void emitUpdateBoardPreviewState();
+
 signals:
-    void updateBoardPreviewState(std::vector<QString> &boardState);
-
-    void updateBoardSizeState(QString &selectedSize);
-
-    void updateEnableTimeLimitCheckboxState(bool enabled);
-
-    void updateTimeLimitEditTextState(QString &timeLimit);
+    void updateBoardPreviewState(int boardSize);
 
 public:
-    explicit GameSettingsScreenViewModel();
+    explicit GameSettingsScreenViewModel(int boardSize);
 
-    ~GameSettingsScreenViewModel();
+    ~GameSettingsScreenViewModel() override;
 
     void onSetBoardSize(int size);
 
-    void onEnableTimeLimitCheckboxState(bool enabled);
+    void onUpdateEnableTimeLimitCheckboxState(bool enabled);
 
     void onUpdateTimeLimit(QString &timeLimit);
 };
