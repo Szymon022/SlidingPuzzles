@@ -9,9 +9,6 @@
 
 
 void BoardPreview::createBoard(const int boardSize) {
-
-    int tileSize = (window()->height() - 200) / boardSize;
-
     ui->verticalLayout->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Expanding, QSizePolicy::Fixed));
     for (int i = 0; i < boardSize; i++) {
         auto row = new QHBoxLayout();
@@ -77,7 +74,7 @@ void BoardPreview::onUpdateBoardSize(const int size) {
 }
 
 void BoardPreview::resizeButtons() {
-    const int boardSizePx = window()->height() - 150;
+    const int boardSizePx = std::min(window()->height() - 150, window()->width() - 400);
     const int tileSizePx = boardSizePx / boardSize;
 
     for (int i = 0; i < buttons.size(); i++) {
