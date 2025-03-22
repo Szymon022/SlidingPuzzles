@@ -10,9 +10,6 @@ GameSettingsScreenViewModel::GameSettingsScreenViewModel(const int boardSize) {
     this->boardSize = boardSize;
 }
 
-GameSettingsScreenViewModel::~GameSettingsScreenViewModel() {
-}
-
 void GameSettingsScreenViewModel::onUpdateEnableTimeLimitCheckboxState(const bool enabled) {
     this->timeLimitEnabled = enabled;
 }

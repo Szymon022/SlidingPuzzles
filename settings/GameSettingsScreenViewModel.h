@@ -22,8 +22,6 @@ signals:
 public:
     explicit GameSettingsScreenViewModel(int boardSize);
 
-    ~GameSettingsScreenViewModel() override;
-
     void onSetBoardSize(int size);
 
     void onUpdateEnableTimeLimitCheckboxState(bool enabled);
