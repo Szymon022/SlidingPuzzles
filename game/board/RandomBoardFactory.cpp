@@ -21,8 +21,9 @@ bool RandomBoardFactory::isSolvable(const std::vector<int> &board) {
 }
 
 Board *RandomBoardFactory::getRandomBoard(const int boardSize) {
-    auto randomEngine = std::default_random_engine();
-    int boardElementsNumer = boardSize * boardSize;
+    auto randomDevice = std::random_device();
+    auto randomEngine = std::default_random_engine{randomDevice()};
+    const int boardElementsNumer = boardSize * boardSize;
 
     auto board = std::vector<int>();
     do {

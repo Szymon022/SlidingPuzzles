@@ -102,6 +102,7 @@ void GameScreenViewModel::onTimerTick() {
 
 GameScreenViewModel::GameScreenViewModel(const int boardSize) {
     this->board = RandomBoardFactory::getRandomBoard(boardSize);
+    this->boardSize = boardSize;
 }
 
 GameScreenViewModel::~GameScreenViewModel() {
@@ -140,7 +141,8 @@ void GameScreenViewModel::onRestartClick() {
     stopTimer();
     gameDurationMillis = 0;
     movesCounter = 0;
-    board->restart();
+    delete board;
+    board = RandomBoardFactory::getRandomBoard(boardSize);
 
     emitUpdateBoardState(board);
     emitUpdateTimerState(gameDurationMillis);
