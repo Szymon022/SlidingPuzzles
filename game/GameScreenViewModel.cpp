@@ -13,7 +13,7 @@
 void GameScreenViewModel::startTimer() {
     if (timer == nullptr) {
         timer = new QTimer(this);
-        timer->setInterval(1000);
+        timer->setInterval(50);
         connect(timer, &QTimer::timeout, this, &GameScreenViewModel::onTimerTick);
         timer->start();
     }
@@ -96,7 +96,7 @@ void GameScreenViewModel::emitGameWonDialog() {
 }
 
 void GameScreenViewModel::onTimerTick() {
-    gameDurationMillis += 1000;
+    gameDurationMillis += 50;
     emitUpdateTimerState(gameDurationMillis);
 }
 
