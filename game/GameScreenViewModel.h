@@ -18,6 +18,7 @@ class GameScreenViewModel : public QObject {
     int movesCounter{0};
     int gameDurationMillis{0};
     QSettings settings;
+    int boardSize;
 
     void startTimer();
 
