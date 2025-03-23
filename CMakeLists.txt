@@ -48,9 +48,6 @@ add_executable(SlidingPuzzles main.cpp
         game/dialog/GameWonDialog.cpp
         game/dialog/GameWonDialog.h
         game/dialog/GameWonDialog.ui
-        game/dialog/GameLostDialog.cpp
-        game/dialog/GameLostDialog.h
-        game/dialog/GameLostDialog.ui
 )
 target_link_libraries(SlidingPuzzles
   Qt::Core
