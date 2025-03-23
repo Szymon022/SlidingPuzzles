@@ -8,6 +8,7 @@
 #include "board/RandomBoardFactory.h"
 #include "board/tiles/EmptyTile.h"
 #include "board/tiles/NumberTile.h"
+#include "dialog/GameWonDialog.h"
 
 void GameScreenViewModel::startTimer() {
     if (timer == nullptr) {
@@ -26,13 +27,7 @@ void GameScreenViewModel::stopTimer() {
 }
 
 void GameScreenViewModel::emitUpdateTimerState(const int time) {
-    std::stringstream ss;
-
-    ss << time / 60000;
-    ss << ":";
-    ss << std::setw(2) << std::setfill('0') << time / 1000 % 60;
-
-    emit updateTimerState(QString::fromStdString(ss.str()));
+    emit updateTimerState(getTimerLabel(time));
 }
 
 void GameScreenViewModel::emitUpdateMovesCounterState(const int movesCounter) {
@@ -60,20 +55,44 @@ void GameScreenViewModel::updateBestResult() const {
     const auto bestTimeMs = ResultsStorage::getBestTimeMs(board->getSize());
 
     if (bestMoves == -1) {
-        qDebug() << "No saved moves counter, entering " + QString::number(this->movesCounter);
         ResultsStorage::upsertMovesCounter(board->getSize(), this->movesCounter);
     } else if (bestMoves > this->movesCounter) {
-        qDebug() << "They can be beaten! Better moves=" + QString::number(this->movesCounter);
         ResultsStorage::upsertMovesCounter(board->getSize(), this->movesCounter);
     }
 
     if (bestTimeMs == -1) {
-        qDebug() << "No saved times, entering " + QString::number(this->gameDurationMillis) + "ms";
         ResultsStorage::upsertTimeMs(board->getSize(), this->gameDurationMillis);
     } else if (bestTimeMs > this->gameDurationMillis) {
-        qDebug() << "They can be beaten! Better time=" + QString::number(this->gameDurationMillis) + "ms";
         ResultsStorage::upsertTimeMs(board->getSize(), this->gameDurationMillis);
     }
+}
+
+QString GameScreenViewModel::getTimerLabel(const int timeMs) const {
+    std::stringstream ss;
+
+    ss << timeMs / 60000;
+    ss << ":";
+    ss << std::setw(2) << std::setfill('0') << timeMs / 1000 % 60;
+
+    return QString::fromStdString(ss.str());
+}
+
+void GameScreenViewModel::emitGameWonDialog() {
+    const auto bestMoves = ResultsStorage::getBestMovesCounter(board->getSize());
+    const auto bestTimeMs = ResultsStorage::getBestTimeMs(board->getSize());
+
+    const QString bestMovesLabel = bestMoves != -1 ? QString::number(bestMoves) : "Not set";
+    const QString yourMovesLabel = bestMoves != -1 && bestMoves > movesCounter
+                                       ? QString::number(movesCounter) + " (NEW BEST)"
+                                       : QString::number(movesCounter);
+
+
+    const QString bestTimeLabel = bestTimeMs != -1 ? getTimerLabel(bestTimeMs) : "Not set";
+    const QString yourTimeLabel = bestTimeMs != -1 && bestTimeMs > gameDurationMillis
+                                      ? getTimerLabel(gameDurationMillis) + " (NEW BEST)"
+                                      : getTimerLabel(gameDurationMillis);
+
+    emit showGameWonDialog(yourMovesLabel, bestMovesLabel, yourTimeLabel, bestTimeLabel);
 }
 
 void GameScreenViewModel::onTimerTick() {
@@ -109,8 +128,9 @@ void GameScreenViewModel::onBoardClick(const int row, const int column) {
 
     if (board->isSolved()) {
         stopTimer();
-        updateBestResult();
         emit updateGameWonState(true);
+        emitGameWonDialog();
+        updateBestResult();
     } else {
         startTimer();
     }

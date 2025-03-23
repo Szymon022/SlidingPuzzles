@@ -31,6 +31,10 @@ class GameScreenViewModel : public QObject {
 
     void updateBestResult() const;
 
+    QString getTimerLabel(int timeMs) const;
+
+    void emitGameWonDialog();
+
 signals:
     void updateTimerState(QString label);
 
@@ -39,6 +43,10 @@ signals:
     void updateBoardState(std::vector<QString> &board);
 
     void updateGameWonState(bool isGameWon);
+
+    void showGameWonDialog(QString yourMoves, QString bestMoves, QString yourTime, QString bestTime);
+
+    void showGameLostDialog();
 
 private slots:
     void onTimerTick();

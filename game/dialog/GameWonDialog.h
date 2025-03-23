@@ -19,6 +19,11 @@ QT_END_NAMESPACE
 class GameWonDialog : public QDialog {
     Q_OBJECT
 
+signals:
+    void exitToMainMenu();
+
+    void playAgain();
+
 public:
     explicit GameWonDialog(QWidget *parent = nullptr);
 
