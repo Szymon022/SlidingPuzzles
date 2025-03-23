@@ -19,11 +19,6 @@ QT_END_NAMESPACE
 class GameLostDialog : public QDialog {
     Q_OBJECT
 
-signals:
-    void exitToMainMenu();
-
-    void playAgain();
-
 public:
     explicit GameLostDialog(QWidget *parent = nullptr);
 
