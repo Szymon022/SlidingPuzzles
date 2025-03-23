@@ -28,7 +28,7 @@ class GameScreen : public QWidget {
     std::vector<QPushButton *> buttons;
 
 public:
-    explicit GameScreen(QWidget *parent = nullptr);
+    explicit GameScreen(int boardSize, QWidget *parent = nullptr);
 
     ~GameScreen() override;
 
