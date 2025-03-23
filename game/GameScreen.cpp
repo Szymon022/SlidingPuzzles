@@ -7,6 +7,7 @@
 #include "GameScreen.h"
 
 #include "ui_GameScreen.h"
+#include "dialog/GameWonDialog.h"
 
 GameScreen::GameScreen(const int boardSize, QWidget *parent) : QWidget(parent), ui(new Ui::GameScreen) {
     ui->setupUi(this);
@@ -46,6 +47,8 @@ GameScreen::GameScreen(const int boardSize, QWidget *parent) : QWidget(parent), 
     connect(viewModel, &GameScreenViewModel::updateBoardState, this, &GameScreen::updateBoard);
     connect(viewModel, &GameScreenViewModel::updateGameWonState, this, &GameScreen::updateGameWonState);
 
+    connect(viewModel, &GameScreenViewModel::showGameWonDialog, this, &GameScreen::showGameWonDialog);
+
     viewModel->getInitialState();
 }
 
@@ -82,6 +85,28 @@ void GameScreen::resizeButtons() {
         buttons[i]->setMinimumSize(tileSizePx, tileSizePx);
         buttons[i]->setMaximumSize(tileSizePx, tileSizePx);
     }
+}
+
+void GameScreen::showGameWonDialog(QString yourMoves, QString bestMoves, QString yourTime, QString bestTime) {
+    const auto gameWonDialog = new GameWonDialog(this);
+
+    connect(gameWonDialog, &GameWonDialog::playAgain, this, [this, gameWonDialog] {
+        gameWonDialog->close();
+        viewModel->onRestartClick();
+    });
+
+    connect(gameWonDialog, &GameWonDialog::exitToMainMenu, this, [this, gameWonDialog] {
+        gameWonDialog->close();
+        navigateToMainMenu(true);
+    });
+
+    gameWonDialog->setYourMoves(yourMoves);
+    gameWonDialog->setBestMoves(bestMoves);
+
+    gameWonDialog->setYourTime(yourTime);
+    gameWonDialog->setBestTime(bestTime);
+
+    gameWonDialog->open();
 }
 
 void GameScreen::resizeEvent(QResizeEvent *event) {

@@ -45,6 +45,8 @@ private slots:
 
     void resizeButtons();
 
+    void showGameWonDialog(QString yourMoves, QString bestMoves, QString yourTime, QString bestTime);
+
 signals:
     void navigateToMainMenu(bool popBackStack);
 
