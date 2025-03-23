@@ -10,6 +10,8 @@
 
 GameLostDialog::GameLostDialog(QWidget *parent) : QDialog(parent), ui(new Ui::GameLostDialog) {
     ui->setupUi(this);
+    connect(ui->playAgainButton, &QPushButton::clicked, this, [this] { emit playAgain(); });
+    connect(ui->exitToMainMenuButton, &QPushButton::clicked, this, [this] { emit exitToMainMenu(); });
 }
 
 GameLostDialog::~GameLostDialog() {

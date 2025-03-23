@@ -19,6 +19,9 @@ class GameScreenViewModel : public QObject {
     int gameDurationMillis{0};
     QSettings settings;
     int boardSize;
+    bool isTimeLimitEnabled;
+    int timeLimitMs;
+    int gameEnded{false};
 
     void startTimer();
 
@@ -55,7 +58,7 @@ private slots:
 public:
     GameScreenViewModel() = delete;
 
-    explicit GameScreenViewModel(int boardSize);
+    explicit GameScreenViewModel(int boardSize, int timeLimitMs = 0, bool enableTimeLimit = false);
 
     ~GameScreenViewModel() override;
 

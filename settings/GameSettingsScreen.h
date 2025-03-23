@@ -25,7 +25,7 @@ class GameSettingsScreen : public QWidget {
 signals:
     void navigateToMainMenu(bool popBackStack);
 
-    void navigateToGameScreen(int boardSize);
+    void navigateToGameScreen(int boardSize, int timeLimitMs, bool enableTimeLimit);
 
 private slots:
     void onUpdateBoardPreviewSize(int boardSize) const;

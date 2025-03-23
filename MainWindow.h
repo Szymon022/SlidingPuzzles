@@ -33,7 +33,7 @@ public slots:
 
     void handleNavigateToGameSettings();
 
-    void handleNavigateToNewGame(int boardSize);
+    void handleNavigateToNewGame(int boardSize, int timeLimit, bool enableTimeLimit);
 
 private:
     Ui::MainWindow *ui;

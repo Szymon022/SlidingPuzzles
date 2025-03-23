@@ -30,7 +30,8 @@ GameSettingsScreen::GameSettingsScreen(QWidget *parent) : QWidget(parent), ui(ne
     connect(ui->exitToMenuScreenButton, &QPushButton::clicked, this, [this] { emit navigateToMainMenu(true); });
     connect(ui->startGameButton, &QPushButton::clicked, this, [this] {
         if (viewModel->validateInput()) {
-            emit navigateToGameScreen(viewModel->getBoardSize());
+            emit navigateToGameScreen(viewModel->getBoardSize(), viewModel->getTimeLimitMillis(),
+                                      ui->enableTimeLimitCheckBox->isChecked());
         }
     });
 
