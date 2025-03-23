@@ -27,7 +27,10 @@ void GameScreenViewModel::stopTimer() {
 }
 
 void GameScreenViewModel::emitUpdateTimerState(const int time) {
-    emit updateTimerState(getTimerLabel(time));
+    const auto timerLabel = isTimeLimitEnabled
+                                ? getTimerLabel(time) + " / " + getTimerLabel(timeLimitMs)
+                                : getTimerLabel(time);
+    emit updateTimerState(timerLabel);
 }
 
 void GameScreenViewModel::emitUpdateMovesCounterState(const int movesCounter) {
