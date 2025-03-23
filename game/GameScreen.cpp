@@ -7,12 +7,14 @@
 #include "GameScreen.h"
 
 #include "ui_GameScreen.h"
+#include "dialog/GameLostDialog.h"
 #include "dialog/GameWonDialog.h"
 
-GameScreen::GameScreen(const int boardSize, QWidget *parent) : QWidget(parent), ui(new Ui::GameScreen) {
+GameScreen::GameScreen(const int boardSize, const int timeLimitMs, const bool enableTimeLimit,
+                       QWidget *parent) : QWidget(parent), ui(new Ui::GameScreen) {
     ui->setupUi(this);
 
-    viewModel = new GameScreenViewModel(boardSize);
+    viewModel = new GameScreenViewModel(boardSize, timeLimitMs, enableTimeLimit);
     this->boardSize = boardSize;
 
     this->rows = std::vector<QHBoxLayout *>();
@@ -45,9 +47,9 @@ GameScreen::GameScreen(const int boardSize, QWidget *parent) : QWidget(parent), 
     connect(viewModel, &GameScreenViewModel::updateMovesCounterState, this, &GameScreen::updateMovesCounterLabel);
     connect(viewModel, &GameScreenViewModel::updateTimerState, this, &GameScreen::updateTimerLabel);
     connect(viewModel, &GameScreenViewModel::updateBoardState, this, &GameScreen::updateBoard);
-    connect(viewModel, &GameScreenViewModel::updateGameWonState, this, &GameScreen::updateGameWonState);
 
     connect(viewModel, &GameScreenViewModel::showGameWonDialog, this, &GameScreen::showGameWonDialog);
+    connect(viewModel, &GameScreenViewModel::showGameLostDialog, this, &GameScreen::showGameLostDialog);
 
     viewModel->getInitialState();
 }
@@ -68,12 +70,6 @@ void GameScreen::updateMovesCounterLabel(const QString &label) const {
 void GameScreen::updateBoard(const std::vector<QString> &board) const {
     for (int i = 0; i < board.size(); i++) {
         buttons[i]->setText(board[i]);
-    }
-}
-
-void GameScreen::updateGameWonState(const bool isGameWon) const {
-    if (isGameWon) {
-        qDebug("GAME WON!");
     }
 }
 
@@ -107,6 +103,21 @@ void GameScreen::showGameWonDialog(QString yourMoves, QString bestMoves, QString
     gameWonDialog->setBestTime(bestTime);
 
     gameWonDialog->open();
+}
+
+void GameScreen::showGameLostDialog() {
+    const auto gameLostDialog = new GameLostDialog(this);
+
+    connect(gameLostDialog, &GameLostDialog::playAgain, this, [this, gameLostDialog] {
+        gameLostDialog->close();
+        viewModel->onRestartClick();
+    });
+    connect(gameLostDialog, &GameLostDialog::exitToMainMenu, this, [this, gameLostDialog] {
+        gameLostDialog->close();
+        navigateToMainMenu(true);
+    });
+
+    gameLostDialog->open();
 }
 
 void GameScreen::resizeEvent(QResizeEvent *event) {
