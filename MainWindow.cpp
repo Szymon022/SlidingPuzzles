@@ -53,8 +53,8 @@ void MainWindow::handleNavigateToGameSettings() {
     ui->stackedWidget->setCurrentIndex(navigationStack.size() - 1);
 }
 
-void MainWindow::handleNavigateToNewGame() {
-    const auto gameScreen = new GameScreen();
+void MainWindow::handleNavigateToNewGame(const int boardSize) {
+    const auto gameScreen = new GameScreen(boardSize);
 
     connect(gameScreen, &GameScreen::navigateToMainMenu, this, &MainWindow::handleNavigateToMainMenu);
 

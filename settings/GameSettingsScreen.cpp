@@ -30,7 +30,7 @@ GameSettingsScreen::GameSettingsScreen(QWidget *parent) : QWidget(parent), ui(ne
     connect(ui->exitToMenuScreenButton, &QPushButton::clicked, this, [this] { emit navigateToMainMenu(true); });
     connect(ui->startGameButton, &QPushButton::clicked, this, [this] {
         if (viewModel->validateInput()) {
-            emit navigateToGameScreen();
+            emit navigateToGameScreen(viewModel->getBoardSize());
         }
     });
 

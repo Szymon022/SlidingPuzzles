@@ -43,6 +43,10 @@ bool GameSettingsScreenViewModel::validateInput() {
     return true;
 }
 
+int GameSettingsScreenViewModel::getBoardSize() const {
+    return boardSize;
+}
+
 void GameSettingsScreenViewModel::onSetBoardSize(const int size) {
     this->boardSize = size;
     emit updateBoardPreviewState(size);

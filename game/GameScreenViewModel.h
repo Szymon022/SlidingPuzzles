@@ -40,7 +40,9 @@ private slots:
     void onTimerTick();
 
 public:
-    explicit GameScreenViewModel();
+    GameScreenViewModel() = delete;
+
+    explicit GameScreenViewModel(int boardSize);
 
     ~GameScreenViewModel() override;
 

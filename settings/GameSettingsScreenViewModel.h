@@ -33,6 +33,8 @@ public:
     void onUpdateTimeLimit(const QString &timeLimit);
 
     bool validateInput();
+
+    int getBoardSize() const;
 };
 
 
