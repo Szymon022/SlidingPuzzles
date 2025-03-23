@@ -6,13 +6,11 @@
 
 GameSettingsScreenViewModel::GameSettingsScreenViewModel(const int boardSize, const QString timeLimitLiteral) {
     timeLimitMillis = 2 * 60 * 1000;
-    timeLimitEnabled = false;
     this->boardSize = boardSize;
     this->timeLimitLiteral = timeLimitLiteral;
 }
 
 void GameSettingsScreenViewModel::onUpdateEnableTimeLimitCheckboxState(const bool enabled) {
-    this->timeLimitEnabled = enabled;
 }
 
 void GameSettingsScreenViewModel::onUpdateTimeLimit(const QString &timeLimit) {
@@ -45,6 +43,10 @@ bool GameSettingsScreenViewModel::validateInput() {
 
 int GameSettingsScreenViewModel::getBoardSize() const {
     return boardSize;
+}
+
+int GameSettingsScreenViewModel::getTimeLimitMillis() const {
+    return timeLimitMillis;
 }
 
 void GameSettingsScreenViewModel::onSetBoardSize(const int size) {

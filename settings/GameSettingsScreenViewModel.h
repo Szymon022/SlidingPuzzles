@@ -13,7 +13,6 @@ class GameSettingsScreenViewModel : public QObject {
     int boardSize;
     int timeLimitMillis;
     QString timeLimitLiteral;
-    bool timeLimitEnabled;
 
     void emitUpdateBoardPreviewState();
 
@@ -35,6 +34,8 @@ public:
     bool validateInput();
 
     int getBoardSize() const;
+
+    int getTimeLimitMillis() const;
 };
 
 
