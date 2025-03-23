@@ -13,7 +13,7 @@
 void GameScreenViewModel::startTimer() {
     if (timer == nullptr) {
         timer = new QTimer(this);
-        timer->setInterval(50);
+        timer->setInterval(1000);
         connect(timer, &QTimer::timeout, this, &GameScreenViewModel::onTimerTick);
         timer->start();
     }
@@ -27,10 +27,7 @@ void GameScreenViewModel::stopTimer() {
 }
 
 void GameScreenViewModel::emitUpdateTimerState(const int time) {
-    const auto timerLabel = isTimeLimitEnabled
-                                ? getTimerLabel(time) + " / " + getTimerLabel(timeLimitMs)
-                                : getTimerLabel(time);
-    emit updateTimerState(timerLabel);
+    emit updateTimerState(getTimerLabel(time));
 }
 
 void GameScreenViewModel::emitUpdateMovesCounterState(const int movesCounter) {
@@ -99,22 +96,12 @@ void GameScreenViewModel::emitGameWonDialog() {
 }
 
 void GameScreenViewModel::onTimerTick() {
-    gameDurationMillis += 50;
+    gameDurationMillis += 1000;
     emitUpdateTimerState(gameDurationMillis);
-
-    if (isTimeLimitEnabled && gameDurationMillis >= timeLimitMs) {
-        stopTimer();
-        emit showGameLostDialog();
-        gameEnded = true;
-    }
 }
 
-GameScreenViewModel::GameScreenViewModel(const int boardSize, const int timeLimitMs, const bool enableTimeLimit) {
+GameScreenViewModel::GameScreenViewModel(const int boardSize) {
     this->board = RandomBoardFactory::getRandomBoard(boardSize);
-    this->boardSize = boardSize;
-    this->timeLimitMs = timeLimitMs;
-    this->isTimeLimitEnabled = enableTimeLimit;
-    this->gameEnded = false;
 }
 
 GameScreenViewModel::~GameScreenViewModel() {
@@ -129,10 +116,11 @@ void GameScreenViewModel::getInitialState() {
     emitUpdateBoardState(board);
     emitUpdateMovesCounterState(movesCounter);
     emitUpdateTimerState(gameDurationMillis);
+    emit updateGameWonState(false);
 }
 
 void GameScreenViewModel::onBoardClick(const int row, const int column) {
-    if (board->isSolved() || gameEnded) return;
+    if (board->isSolved()) return;
     if (board->onTileClick(row, column) == false) return;
 
     emitUpdateMovesCounterState(++movesCounter);
@@ -140,9 +128,9 @@ void GameScreenViewModel::onBoardClick(const int row, const int column) {
 
     if (board->isSolved()) {
         stopTimer();
+        emit updateGameWonState(true);
         emitGameWonDialog();
         updateBestResult();
-        gameEnded = true;
     } else {
         startTimer();
     }
@@ -152,11 +140,10 @@ void GameScreenViewModel::onRestartClick() {
     stopTimer();
     gameDurationMillis = 0;
     movesCounter = 0;
-    gameEnded = false;
-    delete board;
-    board = RandomBoardFactory::getRandomBoard(boardSize);
+    board->restart();
 
     emitUpdateBoardState(board);
     emitUpdateTimerState(gameDurationMillis);
     emitUpdateMovesCounterState(movesCounter);
+    emit updateGameWonState(false);
 }

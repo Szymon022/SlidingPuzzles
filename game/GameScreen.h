@@ -28,7 +28,7 @@ class GameScreen : public QWidget {
     std::vector<QPushButton *> buttons;
 
 public:
-    explicit GameScreen(int boardSize, int timeLimitMs, bool enableTimeLimit, QWidget *parent = nullptr);
+    explicit GameScreen(int boardSize, QWidget *parent = nullptr);
 
     ~GameScreen() override;
 
@@ -41,11 +41,11 @@ private slots:
 
     void updateBoard(const std::vector<QString> &board) const;
 
+    void updateGameWonState(bool isGameWon) const;
+
     void resizeButtons();
 
     void showGameWonDialog(QString yourMoves, QString bestMoves, QString yourTime, QString bestTime);
-
-    void showGameLostDialog();
 
 signals:
     void navigateToMainMenu(bool popBackStack);
