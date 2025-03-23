@@ -8,11 +8,11 @@
 
 #include "ui_GameScreen.h"
 
-GameScreen::GameScreen(QWidget *parent) : QWidget(parent), ui(new Ui::GameScreen) {
+GameScreen::GameScreen(const int boardSize, QWidget *parent) : QWidget(parent), ui(new Ui::GameScreen) {
     ui->setupUi(this);
 
-    viewModel = new GameScreenViewModel();
-    this->boardSize = 3;
+    viewModel = new GameScreenViewModel(boardSize);
+    this->boardSize = boardSize;
 
     this->rows = std::vector<QHBoxLayout *>();
     this->buttons = std::vector<QPushButton *>();
@@ -63,7 +63,7 @@ void GameScreen::updateMovesCounterLabel(const QString &label) const {
 }
 
 void GameScreen::updateBoard(const std::vector<QString> &board) const {
-    for (int i = 0; i < 9; i++) {
+    for (int i = 0; i < board.size(); i++) {
         buttons[i]->setText(board[i]);
     }
 }

@@ -20,7 +20,7 @@ MenuScreen::MenuScreen(QWidget* parent) : QWidget(parent), ui(new Ui::MenuScreen
 
 void MenuScreen::onNewGameClicked()
 {
-    emit navigateToNewGame();
+    emit navigateToGameSettings();
 }
 
 void MenuScreen::onExitGameClicked()

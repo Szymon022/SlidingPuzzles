@@ -33,6 +33,14 @@ add_executable(SlidingPuzzles main.cpp
         game/board/tiles/ValueTile.h
         game/GameScreenViewModel.cpp
         game/GameScreenViewModel.h
+        settings/GameSettingsScreen.cpp
+        settings/GameSettingsScreen.h
+        settings/GameSettingsScreen.ui
+        settings/GameSettingsScreenViewModel.cpp
+        settings/GameSettingsScreenViewModel.h
+        game/board/BoardPreview.cpp
+        game/board/BoardPreview.h
+        game/board/BoardPreview.ui
 )
 target_link_libraries(SlidingPuzzles
   Qt::Core

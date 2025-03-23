@@ -31,7 +31,9 @@ public:
 public slots:
     void handleNavigateToMainMenu(bool popBackStack);
 
-    void handleNavigateToNewGame();
+    void handleNavigateToGameSettings();
+
+    void handleNavigateToNewGame(int boardSize);
 
 private:
     Ui::MainWindow *ui;

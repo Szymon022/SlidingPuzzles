@@ -27,7 +27,7 @@ public:
     ~MenuScreen() override;
 
 signals:
-    void navigateToNewGame();
+    void navigateToGameSettings();
 
 private slots:
     void onNewGameClicked();
