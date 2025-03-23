@@ -8,6 +8,7 @@
 #include <QTimer>
 
 #include "board/Board.h"
+#include <QSettings>
 
 class GameScreenViewModel : public QObject {
     Q_OBJECT
@@ -16,6 +17,7 @@ class GameScreenViewModel : public QObject {
     Board *board;
     int movesCounter{0};
     int gameDurationMillis{0};
+    QSettings settings;
 
     void startTimer();
 
@@ -26,6 +28,8 @@ class GameScreenViewModel : public QObject {
     void emitUpdateMovesCounterState(int movesCounter);
 
     void emitUpdateBoardState(const Board *board);
+
+    void updateBestResult() const;
 
 signals:
     void updateTimerState(QString label);

@@ -43,6 +43,8 @@ add_executable(SlidingPuzzles main.cpp
         game/board/BoardPreview.ui
         game/board/RandomBoardFactory.cpp
         game/board/RandomBoardFactory.h
+        storage/ResultsStorage.cpp
+        storage/ResultsStorage.h
 )
 target_link_libraries(SlidingPuzzles
   Qt::Core
