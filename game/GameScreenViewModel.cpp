@@ -4,6 +4,7 @@
 
 #include "GameScreenViewModel.h"
 
+#include "../storage/ResultsStorage.h"
 #include "board/RandomBoardFactory.h"
 #include "board/tiles/EmptyTile.h"
 #include "board/tiles/NumberTile.h"
@@ -54,6 +55,27 @@ void GameScreenViewModel::emitUpdateBoardState(const Board *board) {
     emit updateBoardState(boardState);
 }
 
+void GameScreenViewModel::updateBestResult() const {
+    const auto bestMoves = ResultsStorage::getBestMovesCounter(board->getSize());
+    const auto bestTimeMs = ResultsStorage::getBestTimeMs(board->getSize());
+
+    if (bestMoves == -1) {
+        qDebug() << "No saved moves counter, entering " + QString::number(this->movesCounter);
+        ResultsStorage::upsertMovesCounter(board->getSize(), this->movesCounter);
+    } else if (bestMoves > this->movesCounter) {
+        qDebug() << "They can be beaten! Better moves=" + QString::number(this->movesCounter);
+        ResultsStorage::upsertMovesCounter(board->getSize(), this->movesCounter);
+    }
+
+    if (bestTimeMs == -1) {
+        qDebug() << "No saved times, entering " + QString::number(this->gameDurationMillis) + "ms";
+        ResultsStorage::upsertTimeMs(board->getSize(), this->gameDurationMillis);
+    } else if (bestTimeMs > this->gameDurationMillis) {
+        qDebug() << "They can be beaten! Better time=" + QString::number(this->gameDurationMillis) + "ms";
+        ResultsStorage::upsertTimeMs(board->getSize(), this->gameDurationMillis);
+    }
+}
+
 void GameScreenViewModel::onTimerTick() {
     gameDurationMillis += 1000;
     emitUpdateTimerState(gameDurationMillis);
@@ -82,15 +104,16 @@ void GameScreenViewModel::onBoardClick(const int row, const int column) {
     if (board->isSolved()) return;
     if (board->onTileClick(row, column) == false) return;
 
+    emitUpdateMovesCounterState(++movesCounter);
+    emitUpdateBoardState(board);
+
     if (board->isSolved()) {
         stopTimer();
+        updateBestResult();
         emit updateGameWonState(true);
     } else {
         startTimer();
     }
-
-    emitUpdateMovesCounterState(++movesCounter);
-    emitUpdateBoardState(board);
 }
 
 void GameScreenViewModel::onRestartClick() {
