@@ -60,12 +60,6 @@ void GameScreenViewModel::onTimerTick() {
 }
 
 GameScreenViewModel::GameScreenViewModel(const int boardSize) {
-    // auto tiles = std::vector<int>();
-    // const int tilesNumer = boardSize * boardSize;
-    // for (int i = 0; i < tilesNumer - 1; i++) {
-    //     tiles.push_back(i + 1);
-    // }
-    // tiles.push_back(0);
     this->board = RandomBoardFactory::getRandomBoard(boardSize);
 }
 
