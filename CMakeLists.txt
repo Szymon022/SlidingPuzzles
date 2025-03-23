@@ -45,6 +45,9 @@ add_executable(SlidingPuzzles main.cpp
         game/board/RandomBoardFactory.h
         storage/ResultsStorage.cpp
         storage/ResultsStorage.h
+        game/dialog/GameWonDialog.cpp
+        game/dialog/GameWonDialog.h
+        game/dialog/GameWonDialog.ui
 )
 target_link_libraries(SlidingPuzzles
   Qt::Core
