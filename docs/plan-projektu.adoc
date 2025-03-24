@@ -59,13 +59,15 @@ image::slides_end_game.jpg[]
 
 == Diagramy klas
 
-=== Diagram zależności dla ekranu głównego
+=== Ekran główny
+
+==== Diagram zależności
 
 image::class-diagram-MainWindowDependencies.drawio.png[]
 
 <<<
 
-=== Diagram klas dla ekranu głównego
+==== Diagram klas
 
 image::class-diagram-MenuScreen.drawio.png[]
 
@@ -76,17 +78,19 @@ W tym przypadku *wyjątkowo* nie ma odpowiadającego `ViewModelu` ponieważ ten 
 
 <<<
 
-=== Diagram zależności dla ekranu tworzenia nowej gry
+=== Ekran tworzenia nowej gry
+
+==== Diagram zależności
 
 image::class-diagram-GameSettingsDependencies.drawio.png[]
 
 <<<
 
-=== Diagram klas dla ekranu tworzenia nowej gry
+==== Diagram klas
 
 image::class-diagram-GameSettingsScreen.drawio.png[]
 
-* `MainWindow` - klasa kontener działająca tak jak opisano w <<Diagram klas dla ekranu głównego, tym akapicie>>.
+* `MainWindow` - klasa kontener działająca tak jak opisano w <<Diagram klas,tym akapicie>>.
 * `GameSettingsScreen` - klasa reprezentująca ekran tworzenia nowej gry.
 Odpowiedzialnością tej klasy jest renderowanie ui oraz przechwytywanie interakcji użytkownika, która jest przekazywana do `GameSettingsScreenViewModel`.
 Klasa ta też jest odpowiedzialna za wysyłanie sygnałów do `MainWindow`, które oznaczają nawigację między ekranami.
@@ -98,13 +102,15 @@ Dodatkowo view model validuje czas wpisany w polu do ustawiania limitu.
 
 <<<
 
-=== Diagram zależności dla ekranu gry
+=== Ekran gry
+
+==== Diagram zależności dla ekranu gry
 
 image::class-diagram-GameDependencies.drawio.png[]
 
 <<<
 
-=== Diagram klas dla ekranu gry
+==== Diagram klas dla ekranu gry
 
 image::class-diagram-GameScreen.drawio.png[]
 
