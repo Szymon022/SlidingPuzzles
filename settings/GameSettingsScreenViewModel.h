@@ -16,9 +16,6 @@ class GameSettingsScreenViewModel : public QObject {
     int timeLimitMillis;
     QString timeLimitLiteral;
 
-    void emitUpdateBoardPreviewState();
-
-
 signals:
     /**
      * Emitted when user selects board size from the combo box.
@@ -41,12 +38,6 @@ public:
      * @param size new board preview size
      */
     void onSetBoardSize(int size);
-
-    /**
-     * Enables/Disables time limit.
-     * @param enabled if the time limit should be enabled or not
-     */
-    void onUpdateEnableTimeLimitCheckboxState(bool enabled);
 
     /**
      * Sets time limit according to provided literal that is parsed into ms.

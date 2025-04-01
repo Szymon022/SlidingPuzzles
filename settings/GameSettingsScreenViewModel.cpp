@@ -10,9 +10,6 @@ GameSettingsScreenViewModel::GameSettingsScreenViewModel(const int boardSize, co
     this->timeLimitLiteral = timeLimitLiteral;
 }
 
-void GameSettingsScreenViewModel::onUpdateEnableTimeLimitCheckboxState(const bool enabled) {
-}
-
 void GameSettingsScreenViewModel::onUpdateTimeLimit(const QString &timeLimit) {
     timeLimitLiteral = timeLimit;
 }
