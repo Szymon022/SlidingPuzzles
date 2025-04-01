@@ -10,31 +10,45 @@
 
 QT_BEGIN_NAMESPACE
 
-namespace Ui
-{
+namespace Ui {
     class MenuScreen;
 }
 
 QT_END_NAMESPACE
 
-class MenuScreen : public QWidget
-{
+/**
+ * MenuScreen class.
+ */
+class MenuScreen : public QWidget {
     Q_OBJECT
 
 public:
-    explicit MenuScreen(QWidget* parent = nullptr);
+    /**
+     * @param parent parent of the MenuScreen.
+     */
+    explicit MenuScreen(QWidget *parent = nullptr);
 
     ~MenuScreen() override;
 
 signals:
+    /**
+     * Emitted when start game button is clicked.
+     */
     void navigateToGameSettings();
 
 private slots:
+    /**
+     * Handles new game clicked.
+     */
     void onNewGameClicked();
+
+    /**
+     * Handles exit game clicked.
+     */
     void onExitGameClicked();
 
 private:
-    Ui::MenuScreen* ui;
+    Ui::MenuScreen *ui;
 };
 
 
