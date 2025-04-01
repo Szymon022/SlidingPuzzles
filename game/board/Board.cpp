@@ -100,20 +100,6 @@ bool Board::isSolved() const {
     return true;
 }
 
-void Board::printBoard() const {
-    std::stringstream ss;
-    qDebug() << "-------------------";
-    for (int i = 0; i < size; i++) {
-        for (int j = 0; j < size - 1; j++) {
-            ss << board[toOneDimensionIndex(i, j)]->getOrdinal() << "|";
-        }
-        ss << board[toOneDimensionIndex(i, size - 1)]->getOrdinal();
-        qDebug() << ss.str();
-        ss.str("");
-    }
-    qDebug() << "-------------------";
-}
-
 void Board::restart() {
     for (int i = 0; i < board.size(); i++) {
         board[i] = startPosition[i];

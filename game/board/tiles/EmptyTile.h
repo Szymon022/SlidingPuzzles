@@ -6,10 +6,16 @@
 #define EMPTYTILE_H
 #include "Tile.h"
 
-
+/**
+ * Class representing empty tile. Every n-puzzle game has on of these.
+ */
 class EmptyTile : public Tile {
 public:
     EmptyTile() = delete;
+
+    /**
+     * @param ordinal ordinal of this board in a tile
+     */
     EmptyTile(int ordinal);
 };
 
