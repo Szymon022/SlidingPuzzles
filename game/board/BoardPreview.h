@@ -18,6 +18,9 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
+/**
+ * This is a widget that represents a preview of the board.
+ */
 class BoardPreview : public QWidget {
     Q_OBJECT
 
@@ -27,16 +30,21 @@ class BoardPreview : public QWidget {
 
     void createBoard(int boardSize);
 
+    void resizeButtons();
+
+    void resizeEvent(QResizeEvent *event) override;
+
 public:
     explicit BoardPreview(int boardSize, QWidget *parent = nullptr);
 
     ~BoardPreview() override;
 
+    /**
+     * \brief Updates preview board size.
+     *
+     * @param size new size of the board
+     */
     void onUpdateBoardSize(int size);
-
-    void resizeButtons();
-
-    void resizeEvent(QResizeEvent *event) override;
 
 private:
     Ui::BoardPreview *ui;

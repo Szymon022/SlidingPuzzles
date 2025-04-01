@@ -8,6 +8,9 @@
 
 #include "tiles/Tile.h"
 
+/**
+ * Class representing a game board. This class holds current state of the board and enables interaction with it through tile clicks.
+ */
 class Board : public QObject {
     int size;
     std::vector<Tile *> board;
@@ -36,13 +39,23 @@ public:
      *
      * Swap is possible only if clicked tile is a direct neighbor of an empty tile.
      * Empty tile that is placed diagonally relative to clicked tile is not considered to be a neighbor.
-     * @param row
-     * @param column
+     * @param row - row of the clicked tile
+     * @param column - column of the clicked tile
      */
     bool onTileClick(int row, int column);
 
+    /**
+     *
+     * @return size of the board
+     */
     int getSize() const;
 
+    /**
+     *
+     * @param row - row of the tile in a board
+     * @param column - column of the tile in a board
+     * @return pointer to the base class of selected tile. This can be NumberTile or EmptyTile
+     */
     Tile *getTile(int row, int column) const;
 
     /**
@@ -53,8 +66,6 @@ public:
      * @return if board is in solved state.
      */
     bool isSolved() const;
-
-    void printBoard() const;
 
     /**
      * \brief Resets board to starting position in which the board was created.
