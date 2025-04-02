@@ -1,0 +1,49 @@
+= Raport wykonania projektu SlidingPuzzles
+
+== Wykorzystane technologie
+
+Aplikacja została napisana z użyciem frameworka QT Widgets 6.
+Projekt był tworzony w CLion, co narzuciło wykorzystanie narzędzia do budowania CMake.
+Do projektowania UI został wykorzystany QT Creator.
+Użyto języka C++ w wersji 23.
+
+=== Ekran główny
+
+"Strona tytułowa aplikacji".
+Pozwala rozpocząć nową grę.
+
+=== Ekran ustawień gry
+
+Ekran ten otwiera się po rozpoczęciu nowej gry na ekranie głównym.
+
+Finalna funkcjonalność dostępna na tym ekranie:
+
+* Wybór rozmiaru planszy
+* Włączenie wyłączenie limitu czasu na rozwiązanie
+* Ustawienie wartości limitu czasu w formacie "minuty:sekundy" + validacja tego pola (gra nie rozpoczyna się, gdy format ten jest niepoprawny lub gdy sparsowana wartość czasu jest nieprawidłowa, czyli np. ujemna)
+* Podgląd wybranego rozmiaru planszy
+* Wyjście do Ekranu głównego
+* Rozpoczęcie gry z wybranymi ustawieniami
+
+=== Ekran gry
+
+Ekran ten otwiera się po rozpoczęciu gry na ekranie ustawień.
+
+Finalna funkcjonalność dostępna na tym ekranie:
+
+* Interaktywna plansza reprezentująca numeryczną (klasyczną) wersję gry
+* Licznik ruchów
+* Licznik czasu, rozpoczynający odmierzanie w momencie wykonania pierwszego poprawnego ruchu (przesunęła się kafelka na planszy)
+* Pokazujący się limit czasu w przypadku wybrania trybu rozgrywki z limitem czasu.
+* Randomizowana plansza, która jest zawsze rozwiązywalna oraz w której kafelek pusty jest zawsze w prawym dolnym rogu planszy.
+* Wyskakujący dialog w przypadku poprawnego rozwiązania
++
+--
+** Zawiera podsumowanie obecnej gry: liczba ruchów, czas
+** Wyświetla porównanie obecnych wyników z najlepszymi wynikami
+--
++
+* Zapamiętywanie najlepszych wyników (liczba ruchów, najlepszy czas) per rozmiar planszy
+* Możliwość zrestartowania gry.
+Jest wtedy generowana nowa plansza.
+* Możliwość wyjścia do menu
