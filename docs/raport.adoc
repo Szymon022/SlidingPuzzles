@@ -1,4 +1,7 @@
 = Raport wykonania projektu SlidingPuzzles
+:hide-uri-scheme:
+
+Repozytorium: https://github.com/Szymon022/SlidingPuzzles
 
 == Wykorzystane technologie
 
